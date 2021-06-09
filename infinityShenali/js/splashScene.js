@@ -19,7 +19,7 @@ class SplashScene extends Phaser.Scene {
 
   preload () {
     console.log('Splash Scene')
-    this.load.image('splashSceneBackground', './Infinity-Shenali/Techo-Square-Maze-Edition/SplashScene.png')
+    this.load.image('galaxyBackground', './infinityShenali/assets/galaxyBackground.jpg')
   }
 
   create (data) {
