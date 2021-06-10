@@ -7,62 +7,55 @@
 // This is the Game Scene
 
 class GameScene extends Phaser.Scene {
-  // create an square 
-  createSquare () {
-    const squareXLocation = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920
-    let squareXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50;
-    squareXVelocity *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
-    const anSquare = this.physics.add.sprite(squareXLocation, -100, 'square')
-    anSquare.body.velocity.y = 200
-    anSquare.body.velocity.x = squareXVelocity
-    this.squareGroup.add(aSquare)
-  }
 
   constructor () {
     super({ key: 'gameScene' })
 
     this.background = null
-    this.potal = null
+    this.portal = null
     this.checkpoint = false
   }
 
   init (data) {
-    this.cameras.main.setBackgroundColor('#ffffff')
+    this.cameras.main.setBackgroundColor('#050A30')
   }
 
   preload () {
     console.log('Game Scene')
 
     // images
-    this.load.image('galaxyBackground', 'assets/galaxyBackground.jpg')
-    this.load.image('coin', 'assets/coin.gif')
-    this.load.image('spike', 'assets/spike.png')
-    this.load.image('portal', 'assets/portal.gif')
-    this.load.image('squareSprite', 'assets/squareSprite.gif')
+    this.load.image('scene1_galaxyBackground', 'infinityShenali/assets/galaxyBackground.jpg')
+    this.load.image('coin', 'infinityShenali/assets/coin.gif')
+    this.load.image('spike', 'infinityShenali/assets/spike.png')
+    this.load.image('portal', 'infinityShenali/assets/portal.gif')
+    this.load.spritesheet('squareSprite', 'infinityShenali/assets/squareSprite.png')
+    this.load.image('ground', 'infinityShenali/assets/platform.png')
     // sound
   }
 
   create (data) {
-    this.background = this.add.image(0, 0, 'galaxyBackground').setScale(2.0)
+    this.background = this.add.image(0, 0, 'scene1_galaxyBackground.jpg').setScale(2.0)
     this.background.setOrigin(0, 0)
 
-    this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship')
+    // platforms
+    this.platforms.create(400, 568, 'ground').setScale(2).refreshBody()
 
-    // create a group for the missiles
-    this.missileGroup = this.physics.add.group()
+    this.platforms.create(600, 400, 'ground')
+    this.platforms.create(50, 250, 'ground')
+    this.platforms.create(750, 220, 'ground')
 
-    // create a group for the aliens
-    this.alienGroup = this.add.group()
-    this.createAlien()
+    // player
+    this.player = this.physics.add.sprite(100, 450, 'squareSprite');
 
-    // Collisions between missiles and aliens
-    this.physics.add.collider(this.missileGroup, this.alienGroup, function (missileCollide, alienCollide) {
-      alienCollide.destroy()
-      missileCollide.destroy()
-      this.sound.play('explosion')
-      this.createAlien()
-      this.createAlien()
-    }.bind(this))
+    this.player.setBounce(0.2);
+    this.player.setCollideWorldBounds(true);
+
+    this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('squareSprite', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+    )}
   }
 
   update (time, delta) {
@@ -73,37 +66,21 @@ class GameScene extends Phaser.Scene {
     const keySpaceObj = this.input.keyboard.addKey('SPACE')
 
     if (keyLeftObj.isDown === true) {
-      this.ship.x -= 15
-      if (this.ship.x < 0) {
-        this.ship.x = 0
+      this.player.x -= 15
+      if (this.player.x < 0) {
+        this.player.x = 0
       }
     }
 
     if (keyRightObj.isDown === true) {
-      this.ship.x += 15
-      if (this.ship.x > 1920) {
-        this.ship.x = 1920
+      this.player.x += 15
+      if (this.player.x > 1920) {
+        this.player.x = 1920
       }
     }
 
     if (keySpaceObj.isDown === true) {
       if (this.fireMissile === false) {
-        // fire missile
-        this.fireMissile = true
-        const aNewMissile = this.physics.add.sprite(this.ship.x, this.ship.y, 'missile')
-        this.missileGroup.add(aNewMissile)
-        this.sound.play('laser')
-      }
-    }
-
-    if (keySpaceObj.isUp === true) {
-      this.fireMissile = false
-    }
-
-    this.missileGroup.children.each(function (item) {
-      item.y = item.y - 15
-      if (item.y < 0) {
-        item.destroy()
       }
     })
   }

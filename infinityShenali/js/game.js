@@ -29,7 +29,7 @@ const config = {
     }
   },
   // Set backgroundColor
-  backgroundColor: 0x000080,
+  backgroundColor: 0x050A30,
   scale: {
     mode: Phaser.Scale.FIT,
     // we place it in the middle of the page
@@ -40,7 +40,7 @@ const config = {
 const game = new Phaser.Game(config)
 
 // Load scenes
-// NOTE: remember any "key" is global and CANNOT be reused!
+// NOTE: remember any "key" is global and CANNOT be reused (in the different scenes)
 game.scene.add('splashScene', splashScene)
 game.scene.add('titleScene', titleScene)
 game.scene.add('menuScene', menuScene)
