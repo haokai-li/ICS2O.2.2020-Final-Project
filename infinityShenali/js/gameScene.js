@@ -60,29 +60,25 @@ class GameScene extends Phaser.Scene {
 
   update (time, delta) {
     // called 60 times a second, hopefully!
-
-    const keyLeftObj = this.input.keyboard.addKey('LEFT')
-    const keyRightObj = this.input.keyboard.addKey('RIGHT')
-    const keySpaceObj = this.input.keyboard.addKey('SPACE')
+    const keySpaceObj = this.input.keyboard.addKey('SPACE') // Get key object
+    const keyLeftObj = this.input.keyboard.addKey('LEFT') // Get key object
+    const keyRightObj = this.input.keyboard.addKey('RIGHT') // Get key object
 
     if (keyLeftObj.isDown === true) {
-      this.player.x -= 15
-      if (this.player.x < 0) {
-        this.player.x = 0
-      }
+      this.player.setVelocityX(-160)
+      this.player.anims.play('left', true)
+    } else if (keyRightObj.isDown === true) {
+      this.player.setVelocityX(160)
+      this.player.anims.play('right', true)
+    }
+    else {
+      this.player.setVelocityX(0)
+      this.player.anims.play('turn');
     }
 
-    if (keyRightObj.isDown === true) {
-      this.player.x += 15
-      if (this.player.x > 1920) {
-        this.player.x = 1920
-      }
+    if (keySpaceObj.isDown === true && this.player.body.touching.down) {
+      this.player.setVelocityY(-330)
     }
-
-    if (keySpaceObj.isDown === true) {
-      if (this.fireMissile === false) {
-      }
-    })
   }
 }
 
