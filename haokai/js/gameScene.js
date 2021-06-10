@@ -24,7 +24,8 @@ class GameScene extends Phaser.Scene {
     this.background = null
     this.ship = null
     this.fireMissle = false
-    this.time = 0
+    this.startTime = true
+    this.timeb = 0
     this.score = 0
     this.scoreText = null
     this.scoreTextStyle = { font: '65px Arial', fill: '#ffffff', align: 'center' }
@@ -53,12 +54,8 @@ class GameScene extends Phaser.Scene {
     this.background = this.add.image(0, 0, 'starBackground').setScale(2.0)
     this.background.setOrigin(0, 0)
 
-    this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle) {
-      while (time == 0) {
-        thread.sleep(1 * 1000)
-        this.score = this.score + 1
-      }
-    }
+    this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
+
 
     this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship')
 
@@ -80,11 +77,24 @@ class GameScene extends Phaser.Scene {
 
   update (time, delta) {
     // called 60 times a second, hopefully!
-
     const keyLeftObj = this.input.keyboard.addKey('LEFT')
     const keyRightObj = this.input.keyboard.addKey('RIGHT')
     const keyUpObj = this.input.keyboard.addKey('UP')
     const keyDownObj = this.input.keyboard.addKey('Down')
+
+    // get time of index start
+    let timea = Math.floor(time / 1000)
+    let timec = 0 - Math.floor(time / 1000)
+
+    // get time of runing of splash, title and menu
+    if (this.startTime == true) {
+      this.startTime = false
+      this.timeb = timec
+    }
+
+    // get time of game runing and give to score
+    this.score = Math.floor(time / 1000) + this.timeb
+    this.scoreText.setText('score: ' + this.score.toString())
 
     if (keyLeftObj.isDown === true) {
       this.ship.x -= 15
