@@ -51,11 +51,11 @@ class GameScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
 
     this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('squareSprite', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    )}
+      key: 'left',
+      frames: this.anims.generateFrameNumbers('squareSprite', { start: 0, end: 3 }),
+      frameRate: 10,
+      repeat: -1
+    })
   }
 
   update (time, delta) {
