@@ -6,9 +6,9 @@
 // Created on: June 2021
 // This is the Menu Scene
 
-class MenuScene extends Phaser.Scene {
+class MenuScene1 extends Phaser.Scene {
   constructor () {
-    super({ key: 'menuScene' })
+    super({ key: 'menuScene1' })
 
     this.menuSceneBackgroundImage = null
     this.startButton = null
@@ -39,8 +39,8 @@ class MenuScene extends Phaser.Scene {
   }
 
   clickButton () {
-    this.scene.start('gameScene')
+    this.scene.start('gameScene1')
   }
 }
 
-export default MenuScene
+export default MenuScene1

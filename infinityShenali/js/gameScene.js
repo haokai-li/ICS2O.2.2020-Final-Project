@@ -6,10 +6,10 @@
 // Created on: June 2021
 // This is the Game Scene
 
-class GameScene extends Phaser.Scene {
+class GameScene1 extends Phaser.Scene {
 
   constructor () {
-    super({ key: 'gameScene' })
+    super({ key: 'gameScene1' })
 
     this.background = null
     this.portal = null
@@ -86,4 +86,4 @@ class GameScene extends Phaser.Scene {
   }
 }
 
-export default GameScene
+export default GameScene1

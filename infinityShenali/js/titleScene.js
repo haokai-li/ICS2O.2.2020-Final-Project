@@ -6,9 +6,9 @@
 // Created on: June 2021
 // This is the Title Scene
 
-class TitleScene extends Phaser.Scene {
+class TitleScene1 extends Phaser.Scene {
   constructor () {
-    super({ key: 'titleScene' })
+    super({ key: 'titleScene1' })
 
     this.titleSceneBackgroundImage = null
     this.titleSceneText = null
@@ -32,9 +32,9 @@ class TitleScene extends Phaser.Scene {
 
   update (time, delta) {
     if (time > 8000) {
-      this.scene.switch('menuScene')
+      this.scene.switch('menuScene1')
     }
   }
 }
 
-export default TitleScene
+export default TitleScene1

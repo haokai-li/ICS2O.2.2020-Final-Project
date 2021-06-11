@@ -6,9 +6,9 @@
 // Created on: June 2021
 // This is the Splash Scene
 
-class SplashScene extends Phaser.Scene {
+class SplashScene1 extends Phaser.Scene {
   constructor () {
-    super({ key: 'splashScene' })
+    super({ key: 'splashScene1' })
 
     this.splashSceneBackgroundImage = null
   }
@@ -30,9 +30,9 @@ class SplashScene extends Phaser.Scene {
 
   update (time, delta) {
     if (time > 5000) {
-      this.scene.switch('titleScene')
+      this.scene.switch('titleScene1')
     }
   }
 }
 
-export default SplashScene
+export default SplashScene1
