@@ -77,11 +77,11 @@ class GameScene extends Phaser.Scene {
           this.defenderPlaced = true
           this.cellClicked = true
           console.log(cell.x, cell.y)
-      })
+      }.bind(this))
       cell.on('pointerup', function() {
         this.cellClicked = false
-      })
-    })
+      }.bind(this))
+    }.bind(this))
   }
 }
 
