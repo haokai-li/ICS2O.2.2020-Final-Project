@@ -6,10 +6,10 @@
 // Created on June 2021
 // This is the Phaser3 configuration file
 
-import SplashScene1 from './infinityShenali/js/splashScene.js'
-import TitleScene1 from './infinityShenali/js/titleScene.js'
-import MenuScene1 from './infinityShenali/js/menuScene.js'
-import GameScene1 from './infinityShenali/js/gameScene.js'
+import SplashScene1 from './splashScene1.js'
+import TitleScene1 from './titleScene1.js'
+import MenuScene1 from './menuScene1.js'
+import GameScene1 from './gameScene1.js'
 
 // Our Game Scene
 const splashScene1 = new SplashScene1()
