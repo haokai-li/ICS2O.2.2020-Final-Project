@@ -14,12 +14,12 @@ class SplashScene extends Phaser.Scene {
   }
 
   init (data) {
-    this.cameras.main.setBackgroundColor('#ffffff')
+    this.cameras.main.setBackgroundColor('#050A30')
   }
 
   preload () {
     console.log('Splash Scene')
-    this.load.image('splashSceneBackground', './Infinity-Shenali/Techo-Square-Maze-Edition/SplashScene.png')
+    this.load.image('splashSceneBackground', './assets/splashSceneBackground.png')
   }
 
   create (data) {
@@ -29,7 +29,7 @@ class SplashScene extends Phaser.Scene {
   }
 
   update (time, delta) {
-    if (time > 3000) {
+    if (time > 5000) {
       this.scene.switch('titleScene')
     }
   }
