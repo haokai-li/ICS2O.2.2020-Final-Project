@@ -36,6 +36,22 @@ class GameScene extends Phaser.Scene {
     }
   }
 
+  // Creates a monster
+  createMonster() {
+    // Gets a y coordinate corresponding with one of the five rows
+    const monsterYLocation = ((Math.floor(Math.random() * 5) + 1) * 180) + 90
+    const monster = this.physics.add.sprite(1920, monsterYLocation, 'monster').setScale(0.20)
+    monster.body.velocity.x = -20
+    this.monsterGroup.add(monster)
+    console.log('Created new monster')
+    if (this.monsterDelay > 2000) {
+      this.monsterDelay -= 500
+      console.log('New delay is: ', this.monsterDelay)
+    }
+    this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
+  }
+
+  // Energy production timer
   addEnergy () {
     this.energy += 25
     this.energyText.setText('Energy: ' + this.energy.toString())
@@ -51,6 +67,8 @@ class GameScene extends Phaser.Scene {
     this.energyText = null
     this.energyTextStyle = { font: '40px Arial', fill: '#000000', }
     this.energyTimer = null
+    this.monsterTimer = null
+    this.monsterDelay = 8000
   }
 
   init (data) {
@@ -63,6 +81,7 @@ class GameScene extends Phaser.Scene {
     // Images
     this.load.image('gameSceneBackground', 'assets/gameSceneBackground.png')
     this.load.image('defender', 'assets/spaceMarine.png')
+    this.load.image('monster', 'assets/monster.png')
   }
 
   create (data) {
@@ -77,9 +96,6 @@ class GameScene extends Phaser.Scene {
     this.gameGridCellGroup = this.add.group()
     this.createGameGrid(96, 270)
 
-    // Defender group
-    this.defenderGroup = this.add.group()
-
     // Checks if a cell has been clicked by the pointer
     this.gameGridCellGroup.children.each(function(cell) {
       cell.on('pointerdown', () => this.createDefender(cell.x, cell.y))
@@ -87,6 +103,15 @@ class GameScene extends Phaser.Scene {
         this.cellClicked = false
       })
     }.bind(this))
+
+    // Defender group
+    this.defenderGroup = this.add.group()
+
+    // Monster group
+    this.monsterGroup = this.add.group()
+
+    // Start Monster timer
+    this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
 
     // Start timer for energy production
     this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
