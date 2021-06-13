@@ -7,6 +7,7 @@
 // This is the Game Scene
 
 class GameScene extends Phaser.Scene {
+  // Creates game grid cells
   createGameGrid (x, y) {
     while (y < 1080){
       while (x < 1920){
@@ -24,14 +25,32 @@ class GameScene extends Phaser.Scene {
       }
     }
   }
-  createDefender () {
-    console.log('test')
+
+  // Creates a defender
+  createDefender (x, y) {
+    if (this.energy >= 100) {
+      this.energy -= 100
+      this.energyText.setText('Energy: ' + this.energy.toString())
+      const defender = this.physics.add.sprite(x, y, 'defender').setScale(3.5)
+      this.defenderGroup.add(defender)
+    }
+  }
+
+  addEnergy () {
+    this.energy += 25
+    this.energyText.setText('Energy: ' + this.energy.toString())
+    console.log('+25 energy')
+    this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
   }
 
   constructor () {
     super({ key: 'gameScene' })
 
     this.background = null
+    this.energy = 200
+    this.energyText = null
+    this.energyTextStyle = { font: '40px Arial', fill: '#000000', }
+    this.energyTimer = null
   }
 
   init (data) {
@@ -41,15 +60,18 @@ class GameScene extends Phaser.Scene {
   preload () {
     console.log('Game Scene')
 
-    // images
+    // Images
     this.load.image('gameSceneBackground', 'assets/gameSceneBackground.png')
     this.load.image('defender', 'assets/spaceMarine.png')
   }
 
   create (data) {
-    // background
+    // Background
     this.background = this.add.image(0, 0, 'gameSceneBackground')
     this.background.setOrigin(0, 0)
+
+    // Energy text
+    this.energyText = this.add.text(10, 10, 'Energy: ' + this.energy.toString(), this.energyTextStyle)
 
     // Game Grid cell group
     this.gameGridCellGroup = this.add.group()
@@ -57,6 +79,17 @@ class GameScene extends Phaser.Scene {
 
     // Defender group
     this.defenderGroup = this.add.group()
+
+    // Checks if a cell has been clicked by the pointer
+    this.gameGridCellGroup.children.each(function(cell) {
+      cell.on('pointerdown', () => this.createDefender(cell.x, cell.y))
+      cell.on('pointerup', function() {
+        this.cellClicked = false
+      })
+    }.bind(this))
+
+    // Start timer for energy production
+    this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
   }
 
   update (time, delta) {
@@ -67,20 +100,6 @@ class GameScene extends Phaser.Scene {
       })
       cell.on('pointerout', function() {
         cell.alpha = 0.01
-      })
-    })
-
-    // Checks if a cell has been clicked by the pointer
-    this.gameGridCellGroup.children.each(function(cell) {
-      cell.on('pointerdown', function(x, y) {
-        if (this.cellClicked === false) {
-          this.defenderPlaced = true
-          this.cellClicked = true
-          console.log(cell.x, cell.y)
-        }
-      })
-      cell.on('pointerup', function() {
-        this.cellClicked = false
       })
     })
   }
