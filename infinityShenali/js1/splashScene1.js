@@ -4,7 +4,7 @@
 //
 // Created by: Infinity de Guzman & Shenali Alles
 // Created on: June 2021
-// This is the Splash Scene
+// This is the Splash Scene1
 
 class SplashScene1 extends Phaser.Scene {
   constructor () {
@@ -19,7 +19,7 @@ class SplashScene1 extends Phaser.Scene {
 
   preload () {
     console.log('Splash Scene')
-    this.load.image('splashSceneBackground', './assets/splashSceneBackground.png')
+    this.load.image('splashSceneBackground', './assets1/splashSceneBackground.png')
   }
 
   create (data) {

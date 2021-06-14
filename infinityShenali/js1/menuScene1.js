@@ -4,7 +4,7 @@
 //
 // Created by: Infinity de Guzman & Shenali Alles 
 // Created on: June 2021
-// This is the Menu Scene
+// This is the Menu Scene1
 
 class MenuScene1 extends Phaser.Scene {
   constructor () {
@@ -21,8 +21,8 @@ class MenuScene1 extends Phaser.Scene {
   preload () {
     console.log('Menu Scene')
 
-    this.load.image('galaxyBackground', 'assets/galaxyBackground.jpg')
-    this.load.image('startButton', 'assets/startButton.gif')
+    this.load.image('galaxyBackground', 'assets1/galaxyBackground.jpg')
+    this.load.image('startButton', 'assets1/startButton.gif')
   }
 
   create (data) {
