@@ -7,6 +7,7 @@
 // This is the Game Scene
 
 class GameScene extends Phaser.Scene {
+  // Creates game grid cells
   createGameGrid (x, y) {
     while (y < 1080){
       while (x < 1920){
@@ -24,14 +25,61 @@ class GameScene extends Phaser.Scene {
       }
     }
   }
-  createDefender () {
-    console.log('test')
+
+  // Creates a defender
+  createDefender (x, y) {
+    if (this.energy >= 100) {
+      this.energy -= 100
+      this.energyText.setText('Energy: ' + this.energy.toString())
+      const defender = this.physics.add.sprite(x, y, 'defender').setScale(3.5)
+      // Makes the defenders
+      defender.shootingTimer = null
+      defender.shootingTimer = this.time.addEvent({ delay: 2000, callback: this.createLaser, callbackScope: this, args: [x, y], loop: true });
+      defender.shootingTimer.paused = true;
+      this.defenderGroup.add(defender)
+    }
+  }
+
+  // Creates a laser
+  createLaser (x, y) {
+    const laser = this.physics.add.sprite(x, y, 'laser')
+    this.laserGroup.add(laser)
+  }
+
+  // Creates a monster
+  createMonster() {
+    // Gets a y coordinate corresponding with one of the five rows
+    const monsterYLocation = ((Math.floor(Math.random() * 5) + 1) * 180) + 90
+    const monster = this.physics.add.sprite(1920, monsterYLocation, 'monster').setScale(0.20)
+    monster.body.velocity.x = -20
+    this.monsterGroup.add(monster)
+    console.log('Created new monster')
+    if (this.monsterDelay > 3000) {
+      this.monsterDelay -= 250
+      console.log('New delay is: ', this.monsterDelay)
+    }
+    this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
+  }
+
+  // Energy production timer
+  addEnergy () {
+    this.energy += 25
+    this.energyText.setText('Energy: ' + this.energy.toString())
+    console.log('+25 energy')
+    this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
   }
 
   constructor () {
     super({ key: 'gameScene' })
 
     this.background = null
+    this.energy = 200
+    this.energyText = null
+    this.energyTextStyle = { font: '40px Arial', fill: '#000000', }
+    this.energyTimer = null
+    this.monsterTimer = null
+    this.monsterDelay = 8000
+    this.timedEvent = null
   }
 
   init (data) {
@@ -41,22 +89,47 @@ class GameScene extends Phaser.Scene {
   preload () {
     console.log('Game Scene')
 
-    // images
+    // Images
     this.load.image('gameSceneBackground', 'assets/gameSceneBackground.png')
     this.load.image('defender', 'assets/spaceMarine.png')
+    this.load.image('monster', 'assets/monster.png')
+    this.load.image('laser', 'assets/laser.png')
   }
 
   create (data) {
-    // background
+    // Background
     this.background = this.add.image(0, 0, 'gameSceneBackground')
     this.background.setOrigin(0, 0)
+
+    // Energy text
+    this.energyText = this.add.text(10, 10, 'Energy: ' + this.energy.toString(), this.energyTextStyle)
 
     // Game Grid cell group
     this.gameGridCellGroup = this.add.group()
     this.createGameGrid(96, 270)
 
+    // Checks if a cell has been clicked by the pointer
+    this.gameGridCellGroup.children.each(function(cell) {
+      cell.on('pointerdown', () => this.createDefender(cell.x, cell.y))
+      cell.on('pointerup', function() {
+        this.cellClicked = false
+      })
+    }.bind(this))
+
     // Defender group
     this.defenderGroup = this.add.group()
+
+    // Laser group
+    this.laserGroup = this.add.group()
+
+    // Monster group
+    this.monsterGroup = this.add.group()
+
+    // Start Monster timer
+    this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
+
+    // Start timer for energy production
+    this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
   }
 
   update (time, delta) {
@@ -70,18 +143,11 @@ class GameScene extends Phaser.Scene {
       })
     })
 
-    // Checks if a cell has been clicked by the pointer
-    this.gameGridCellGroup.children.each(function(cell) {
-      cell.on('pointerdown', function(x, y) {
-        if (this.cellClicked === false) {
-          this.defenderPlaced = true
-          this.cellClicked = true
-          console.log(cell.x, cell.y)
-        }
-      })
-      cell.on('pointerup', function() {
-        this.cellClicked = false
-      })
+    this.laserGroup.children.each(function (item) {
+      item.x = item.x + 5
+      if (item.x > 1920) {
+        item.destroy()
+      }
     })
   }
 }
