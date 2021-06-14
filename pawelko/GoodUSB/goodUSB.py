@@ -8,7 +8,7 @@ import pythoncom
 import pyWinhook
 
 # Getting configuration
-with open("../config.json", "r") as f:
+with open("C:/Program Files/GoodUSB/config.json", "r") as f:
     config = json.load(f)
 preset = config["preset"]
 history = config[preset]["history"]
