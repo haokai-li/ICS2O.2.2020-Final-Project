@@ -1,16 +1,14 @@
 /* global Phaser */
 
-// Copyright (c) 2021 Infinity de Guzman & Shenali Alles All rights reserved
+// Copyright (c) 2021 Ryan-Shaw-2 All rights reserved
 //
-// Created by: Infinity de Guzman & Shenali Alles
-// Created on: June 2021
+// Created by: Ryan-Shaw-2
+// Created on: Apr 2021
 // This is the Splash Scene
 
 class SplashScene extends Phaser.Scene {
   constructor () {
     super({ key: 'splashScene' })
-
-    this.splashSceneBackgroundImage = null
   }
 
   init (data) {
@@ -19,7 +17,7 @@ class SplashScene extends Phaser.Scene {
 
   preload () {
     console.log('Splash Scene')
-    this.load.image('splashSceneBackground', './Infinity-Shenali/Techo-Square-Maze-Edition/SplashScene.png')
+    this.load.image('splashSceneBackground', './assets/splashSceneImage.png')
   }
 
   create (data) {

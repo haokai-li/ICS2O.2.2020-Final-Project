@@ -1,9 +1,9 @@
-/* global phaser */
+/* global Phaser */
 
-// Copyright (c) 2021 Infinity de Guzman & Shenali Alles All rights reserved
+// Copyright (c) 2021 Ryan-Shaw-2 All rights reserved
 //
-// Created by Infinity de Guzman & Shenali Alles
-// Created on June 2021
+// Created by: Ryan-Shaw-2
+// Created on: Apr 2021
 // This is the Phaser3 configuration file
 
 import SplashScene from './splashScene.js'
@@ -11,7 +11,7 @@ import TitleScene from './titleScene.js'
 import MenuScene from './menuScene.js'
 import GameScene from './gameScene.js'
 
-// Our Game Scene
+// Our game Scenes
 const splashScene = new SplashScene()
 const titleScene = new TitleScene()
 const menuScene = new MenuScene()
@@ -28,23 +28,23 @@ const config = {
       debug: true
     }
   },
-  // Set backgroundColor
-  backgroundColor: 0x000080,
+  // set background color
+  backgroundColor: 0xffffff,
   scale: {
     mode: Phaser.Scale.FIT,
-    // we place it in the middle of the page
+    // we place it in the middle of the page.
     autoCenter: Phaser.Scale.CENTER_BOTH
   }
 }
 
 const game = new Phaser.Game(config)
 
-// Load scenes
-// NOTE: remember any "key" is global and CANNOT be reused!
+// load scenes
+// NOTE: remember any "key" is global and CAN NOT be reused
 game.scene.add('splashScene', splashScene)
 game.scene.add('titleScene', titleScene)
 game.scene.add('menuScene', menuScene)
 game.scene.add('gameScene', gameScene)
 
-// Start title
+// start title
 game.scene.start('splashScene')
