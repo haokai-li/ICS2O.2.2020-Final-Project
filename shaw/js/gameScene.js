@@ -32,8 +32,18 @@ class GameScene extends Phaser.Scene {
       this.energy -= 100
       this.energyText.setText('Energy: ' + this.energy.toString())
       const defender = this.physics.add.sprite(x, y, 'defender').setScale(3.5)
+      // Makes the defenders
+      defender.shootingTimer = null
+      defender.shootingTimer = this.time.addEvent({ delay: 2000, callback: this.createLaser, callbackScope: this, args: [x, y], loop: true });
+      defender.shootingTimer.paused = true;
       this.defenderGroup.add(defender)
     }
+  }
+
+  // Creates a laser
+  createLaser (x, y) {
+    const laser = this.physics.add.sprite(x, y, 'laser')
+    this.laserGroup.add(laser)
   }
 
   // Creates a monster
@@ -44,8 +54,8 @@ class GameScene extends Phaser.Scene {
     monster.body.velocity.x = -20
     this.monsterGroup.add(monster)
     console.log('Created new monster')
-    if (this.monsterDelay > 2000) {
-      this.monsterDelay -= 500
+    if (this.monsterDelay > 3000) {
+      this.monsterDelay -= 250
       console.log('New delay is: ', this.monsterDelay)
     }
     this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
@@ -69,6 +79,7 @@ class GameScene extends Phaser.Scene {
     this.energyTimer = null
     this.monsterTimer = null
     this.monsterDelay = 8000
+    this.timedEvent = null
   }
 
   init (data) {
@@ -82,6 +93,7 @@ class GameScene extends Phaser.Scene {
     this.load.image('gameSceneBackground', 'assets/gameSceneBackground.png')
     this.load.image('defender', 'assets/spaceMarine.png')
     this.load.image('monster', 'assets/monster.png')
+    this.load.image('laser', 'assets/laser.png')
   }
 
   create (data) {
@@ -107,6 +119,9 @@ class GameScene extends Phaser.Scene {
     // Defender group
     this.defenderGroup = this.add.group()
 
+    // Laser group
+    this.laserGroup = this.add.group()
+
     // Monster group
     this.monsterGroup = this.add.group()
 
@@ -126,6 +141,13 @@ class GameScene extends Phaser.Scene {
       cell.on('pointerout', function() {
         cell.alpha = 0.01
       })
+    })
+
+    this.laserGroup.children.each(function (item) {
+      item.x = item.x + 5
+      if (item.x > 1920) {
+        item.destroy()
+      }
     })
   }
 }
