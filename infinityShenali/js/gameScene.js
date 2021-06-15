@@ -6,10 +6,10 @@
 // Created on: June 2021
 // This is the Game Scene1
 
-class GameScene1 extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
 
   constructor () {
-    super({ key: 'gameScene1' })
+    super({ key: 'gameScene' })
 
     this.background = null
     this.portal = null
@@ -24,19 +24,19 @@ class GameScene1 extends Phaser.Scene {
     console.log('Game Scene')
 
     // spritesheets
-    this.load.spritesheet('squareSprite', 'infinityShenali/assets1/squareSprite.png', { frameWidth: 48, frameHeight: 48 })
+    this.load.spritesheet('squareSprite', 'infinityShenali/assets/squareSprite.png', { frameWidth: 48, frameHeight: 48 })
 
     // images
-    this.load.image('scene1_galaxyBackground', 'infinityShenali/assets1/galaxyBackground.jpg')
-    this.load.image('coin', 'infinityShenali/assets1/coin.gif')
-    this.load.image('spike', 'infinityShenali/assets1/spike.png')
-    this.load.image('portal', 'infinityShenali/assets1/portal.gif')
-    this.load.image('ground', 'infinityShenali/assets1/platform.png')
+    this.load.image('scene1_galaxyBackground', 'infinityShenali/assets/galaxyBackground.jpg')
+    this.load.image('coin', 'infinityShenali/assets/coin.gif')
+    this.load.image('spike', 'infinityShenali/assets/spike.png')
+    this.load.image('portal', 'infinityShenali/assets/portal.gif')
+    this.load.image('ground', 'infinityShenali/assets/platform.png')
     // sound
   }
 
   create (data) {
-    this.background = this.add.image(0, 0, 'scene1_galaxyBackground.jpg').setScale(2.0)
+    this.background = this.add.image(0, 0, 'galaxyBackground.jpg').setScale(2.0)
     this.background.setOrigin(0, 0)
 
     // platforms

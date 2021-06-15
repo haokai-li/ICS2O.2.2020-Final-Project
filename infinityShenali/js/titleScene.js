@@ -4,11 +4,11 @@
 //
 // Created by: Infinity de Guzman & Shenali Alles 
 // Created on: June 2021
-// This is the Title Scene1
+// This is the Title Scene
 
-class TitleScene1 extends Phaser.Scene {
+class TitleScene extends Phaser.Scene {
   constructor () {
-    super({ key: 'titleScene1' })
+    super({ key: 'titleScene' })
 
     this.titleSceneBackgroundImage = null
     this.titleSceneText = null
@@ -21,7 +21,7 @@ class TitleScene1 extends Phaser.Scene {
 
   preload () {
     console.log('Title Scene')
-    this.load.image('titleSceneBackground', 'assets1/titleMenuScene.png')
+    this.load.image('titleSceneBackground', 'assets/titleMenuScene.png')
   }
 
   create (data) {
@@ -32,9 +32,9 @@ class TitleScene1 extends Phaser.Scene {
 
   update (time, delta) {
     if (time > 8000) {
-      this.scene.switch('menuScene1')
+      this.scene.switch('menuScene')
     }
   }
 }
 
-export default TitleScene1
+export default TitleScene

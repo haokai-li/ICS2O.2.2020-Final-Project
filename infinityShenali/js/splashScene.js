@@ -6,9 +6,9 @@
 // Created on: June 2021
 // This is the Splash Scene1
 
-class SplashScene1 extends Phaser.Scene {
+class SplashScene extends Phaser.Scene {
   constructor () {
-    super({ key: 'splashScene1' })
+    super({ key: 'splashScene' })
 
     this.splashSceneBackgroundImage = null
   }
@@ -19,7 +19,7 @@ class SplashScene1 extends Phaser.Scene {
 
   preload () {
     console.log('Splash Scene')
-    this.load.image('splashSceneBackground', './assets1/splashSceneBackground.png')
+    this.load.image('splashSceneBackground', './assets/splashSceneBackground.png')
   }
 
   create (data) {
@@ -30,9 +30,9 @@ class SplashScene1 extends Phaser.Scene {
 
   update (time, delta) {
     if (time > 5000) {
-      this.scene.switch('titleScene1')
+      this.scene.switch('titleScene')
     }
   }
 }
 
-export default SplashScene1
+export default SplashScene
