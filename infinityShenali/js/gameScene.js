@@ -12,6 +12,7 @@ class GameScene extends Phaser.Scene {
     super({ key: 'gameScene' })
 
     this.player = null
+    this.platforms = null
     this.background = null
     this.portal = null
     this.checkpoint = false
@@ -25,7 +26,7 @@ class GameScene extends Phaser.Scene {
     console.log('Game Scene')
 
     // spritesheets
-    this.load.spritesheet('squareSprite', './assets/squareSprite.png', { frameWidth: 48, frameHeight: 48 })
+    this.load.spritesheet('squareSprite', './assets/squareSprite.png', { frameWidth: 192, frameHeight: 192 })
 
     // images
     this.load.image('scene1_galaxyBackground', './assets/galaxyBackground.jpg')
@@ -37,28 +38,29 @@ class GameScene extends Phaser.Scene {
   }
 
   create (data) {
-    this.background = this.add.image(0, 0, 'scene1_galaxyBackground').setScale(2.0)
+    this.background = this.add.image(0, 0, 'scene1_galaxyBackground')//.setScale(2.0)
     this.background.setOrigin(0, 0)
 
     // platforms
-    //this.platforms.create(400, 568, 'ground').setScale(2).refreshBody()
-    //this.platforms.create(600, 400, 'ground')
-    //this.platforms.create(50, 250, 'ground')
-    //this.platforms.create(750, 220, 'ground')
+    this.platforms = this.physics.add.staticGroup()
+    this.platforms.create(400, 568, 'ground')
+    this.platforms.create(600, 400, 'ground')
+    this.platforms.create(50, 250, 'ground')
+    this.platforms.create(750, 220, 'ground')
 
     // player
     this.player = this.physics.add.sprite (100, 450, 'squareSprite');
     //this.player.frame = 0;  
 
-    //this.player.setBounce(0.2);
-    //this.player.setCollideWorldBounds(true);
+    this.player.setBounce(0.2);
+    this.player.setCollideWorldBounds(true);
 
-    //this.anims.create({
-    //  key: 'left',
-    //  frames: this.anims.generateFrameNumbers('squareSprite', { start: 0, end: 1 }),
-    //  frameRate: 10,
-    //  repeat: -1
-    //})
+    this.anims.create({
+      key: 'left',
+      frames: this.anims.generateFrameNumbers('squareSprite', { start: 0, end: 1 }),
+      frameRate: 10,
+      repeat: -1
+    })
   }
 
   update (time, delta) {
@@ -70,20 +72,20 @@ class GameScene extends Phaser.Scene {
     const keyDownObj = this.input.keyboard.addKey('DOWN') // Get key object
 
     if (keyLeftObj.isDown === true) {
-      //this.player.setVelocityX(-160)
-      //this.player.anims.play('left', true)
+      this.player.setVelocityX(-160)
+      this.player.anims.play('left', true)
     } else if (keyRightObj.isDown === true) {
-      //this.player.setVelocityX(160)
-      //this.player.anims.play('right', true)
+      this.player.setVelocityX(160)
+      this.player.anims.play('right', true)
     }
-    else {
-      //this.player.setVelocityX(0)
-      //this.player.anims.play('turn');
-    }
-
-    //if (keySpaceObj.isDown === true && this.player.body.touching.down) {
-      //this.player.setVelocityY(-330)
+    //else {
+    //  this.player.setVelocityX(0)
+    //  this.player.anims.play('turn');
     //}
+
+    if (keySpaceObj.isDown === true && this.player.body.touching.down) {
+      this.player.setVelocityY(-330)
+    }
   }
 }
 
