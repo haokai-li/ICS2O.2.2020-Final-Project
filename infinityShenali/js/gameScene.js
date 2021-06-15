@@ -24,19 +24,19 @@ class GameScene extends Phaser.Scene {
     console.log('Game Scene')
 
     // spritesheets
-    this.load.spritesheet('squareSprite', 'infinityShenali/assets/squareSprite.png', { frameWidth: 48, frameHeight: 48 })
+    this.load.spritesheet('squareSprite', './assets/squareSprite.png', { frameWidth: 48, frameHeight: 48 })
 
     // images
-    this.load.image('scene1_galaxyBackground', 'infinityShenali/assets/galaxyBackground.jpg')
-    this.load.image('coin', 'infinityShenali/assets/coin.gif')
-    this.load.image('spike', 'infinityShenali/assets/spike.png')
-    this.load.image('portal', 'infinityShenali/assets/portal.gif')
-    this.load.image('ground', 'infinityShenali/assets/platform.png')
+    this.load.image('scene1_galaxyBackground', './assets/galaxyBackground.jpg')
+    this.load.image('coin', './assets/coin.gif')
+    this.load.image('spike', './assets/spike.png')
+    this.load.image('portal', './assets/portal.gif')
+    this.load.image('ground', './assets/platform.png')
     // sound
   }
 
   create (data) {
-    this.background = this.add.image(0, 0, 'galaxyBackground.jpg').setScale(2.0)
+    this.background = this.add.image(0, 0, 'scene1_galaxyBackground').setScale(2.0)
     this.background.setOrigin(0, 0)
 
     // platforms
