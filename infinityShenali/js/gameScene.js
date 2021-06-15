@@ -86,4 +86,4 @@ class GameScene extends Phaser.Scene {
   }
 }
 
-export default GameScene1
+export default GameScene
