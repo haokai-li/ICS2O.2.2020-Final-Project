@@ -77,6 +77,19 @@ class GameScene extends Phaser.Scene {
     }
   }
 
+  // Restart the game
+  restartGame () {
+    this.scene.start('gameScene')
+    this.gameOver = false
+    this.energy = 200
+    this.energyText.setText('Energy: ' + this.energy.toString())
+    this.score = 0
+    this.scoreText.setText('Score: ' + this.score.toString())
+    this.monsterDelay = 8000
+    this.monsterYPositions = []
+    console.log('Game Reset')
+  }
+
   constructor () {
     super({ key: 'gameScene' })
 
@@ -214,7 +227,7 @@ class GameScene extends Phaser.Scene {
         this.gameOver = true
         this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again', this.gameOverTextStyle).setOrigin(0.5)
         this.gameOverText.setInteractive({ useHandCursor: true })
-        this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
+        this.gameOverText.on('pointerdown', () => this.restartGame())
       }
     }.bind(this))
   }
