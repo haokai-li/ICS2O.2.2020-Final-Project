@@ -181,7 +181,7 @@ class GameScene extends Phaser.Scene {
     
     // Makes defenders only shoot if a monster is on their row
     this.defenderGroup.children.each(function(defender) {
-      if (this.monsterYPositions.includes(defender.y)) {
+      if (this.monsterYPositions.includes(defender.y) && this.gameOver != true) {
         defender.shootingTimer.paused = false
       } else {
         defender.shootingTimer.paused = true
