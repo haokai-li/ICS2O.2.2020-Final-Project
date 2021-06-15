@@ -62,15 +62,19 @@ class GameScene extends Phaser.Scene {
       this.monsterDelay -= 250
       console.log('New delay is: ', this.monsterDelay)
     }
-    this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
+    if (this.gameOver != true) {
+      this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
+    }
   }
 
   // Energy production timer
   addEnergy () {
-    this.energy += 25
-    this.energyText.setText('Energy: ' + this.energy.toString())
-    console.log('+25 energy')
-    this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
+    if (this.gameOver != true) {
+      this.energy += 25
+      this.energyText.setText('Energy: ' + this.energy.toString())
+      console.log('+25 energy')
+      this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
+    }
   }
 
   constructor () {
@@ -78,13 +82,17 @@ class GameScene extends Phaser.Scene {
 
     this.background = null
     this.energy = 200
+    this.score = 0
     this.energyText = null
-    this.energyTextStyle = { font: '40px Arial', fill: '#000000', }
+    this.scoreText = null
+    this.energyTextStyle = { font: '40px Arial', fill: '#000000' }
+    this.scoreTextStyle = { font: '40px Arial', fill: '#000000' }
+    this.gameOverTextStyle = { font: '65px Arial', fill: '#000000', align: 'center' }
     this.energyTimer = null
     this.monsterTimer = null
     this.monsterDelay = 8000
-    this.timedEvent = null
     this.monsterYPositions = []
+    this.gameOver = null
   }
 
   init (data) {
@@ -108,6 +116,9 @@ class GameScene extends Phaser.Scene {
 
     // Energy text
     this.energyText = this.add.text(10, 10, 'Energy: ' + this.energy.toString(), this.energyTextStyle)
+
+    // Score Text
+    this.scoreText = this.add.text(10, 60, 'Score: ' + this.score.toString(), this.scoreTextStyle)
 
     // Game Grid cell group
     this.gameGridCellGroup = this.add.group()
@@ -137,13 +148,14 @@ class GameScene extends Phaser.Scene {
     this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
 
     // Collisions between lasers and monsters
-    this.physics.add.collider(this.laserGroup, this.monsterGroup, function (laserCollide, monsterCollide, health) {
+    this.physics.add.collider(this.laserGroup, this.monsterGroup, function (laserCollide, monsterCollide, health,) {
       monsterCollide.health -= 20
       laserCollide.destroy()
     }.bind(this))
 
     // Collisions between lasers and monsters
-    this.physics.add.collider(this.defenderGroup, this.monsterGroup, function (defenderCollide, monsterCollide) {
+    this.physics.add.collider(this.defenderGroup, this.monsterGroup, function (defenderCollide, monsterCollide, shootingTimer) {
+      defenderCollide.shootingTimer.remove()
       defenderCollide.destroy()
     }.bind(this))
   }
@@ -180,9 +192,11 @@ class GameScene extends Phaser.Scene {
     this.monsterGroup.children.each(function(monster) {
       if (monster.health <= 0) {
         monster.destroy()
-        const index = this.monsterYPositions.indexOf(monster.y);
-        if (index > -1) {
-        this.monsterYPositions.splice(index, 1)
+        this.score = this.score + 1
+        this.scoreText.setText('Score: ' + this.score.toString())
+        const removeMonsterY = this.monsterYPositions.indexOf(monster.y);
+        if (removeMonsterY > -1) {
+        this.monsterYPositions.splice(removeMonsterY, 1)
         } 
         console.log(this.monsterYPositions)
       }
@@ -193,6 +207,16 @@ class GameScene extends Phaser.Scene {
       monster.body.velocity.x = -40
     })
 
+    // If a monster reaches the left, it is Game Over!
+    this.monsterGroup.children.each(function(monster) {
+      if (monster.x < 0) {
+        this.physics.pause()
+        this.gameOver = true
+        this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again', this.gameOverTextStyle).setOrigin(0.5)
+        this.gameOverText.setInteractive({ useHandCursor: true })
+        this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
+      }
+    }.bind(this))
   }
 }
 
