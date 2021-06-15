@@ -4,7 +4,7 @@
 //
 // Created by: Infinity de Guzman & Shenali Alles
 // Created on: June 2021
-// This is the Splash Scene
+// This is the Splash Scene1
 
 class SplashScene extends Phaser.Scene {
   constructor () {
