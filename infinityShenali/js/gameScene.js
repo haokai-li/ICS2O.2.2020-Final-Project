@@ -11,6 +11,7 @@ class GameScene extends Phaser.Scene {
   constructor () {
     super({ key: 'gameScene' })
 
+    this.player = null
     this.background = null
     this.portal = null
     this.checkpoint = false
@@ -40,24 +41,24 @@ class GameScene extends Phaser.Scene {
     this.background.setOrigin(0, 0)
 
     // platforms
-    this.platforms.create(400, 568, 'ground').setScale(2).refreshBody()
-    this.platforms.create(600, 400, 'ground')
-    this.platforms.create(50, 250, 'ground')
-    this.platforms.create(750, 220, 'ground')
+    //this.platforms.create(400, 568, 'ground').setScale(2).refreshBody()
+    //this.platforms.create(600, 400, 'ground')
+    //this.platforms.create(50, 250, 'ground')
+    //this.platforms.create(750, 220, 'ground')
 
     // player
-    player = this.physics.add.sprite (100, 450, 'squareSprite');
-    player.frame = 2;  
+    this.player = this.physics.add.sprite (100, 450, 'squareSprite');
+    //this.player.frame = 0;  
 
-    this.player.setBounce(0.2);
-    this.player.setCollideWorldBounds(true);
+    //this.player.setBounce(0.2);
+    //this.player.setCollideWorldBounds(true);
 
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers('squareSprite', { start: 0, end: 3 }),
-      frameRate: 10,
-      repeat: -1
-    })
+    //this.anims.create({
+    //  key: 'left',
+    //  frames: this.anims.generateFrameNumbers('squareSprite', { start: 0, end: 1 }),
+    //  frameRate: 10,
+    //  repeat: -1
+    //})
   }
 
   update (time, delta) {
@@ -69,20 +70,20 @@ class GameScene extends Phaser.Scene {
     const keyDownObj = this.input.keyboard.addKey('DOWN') // Get key object
 
     if (keyLeftObj.isDown === true) {
-      this.player.setVelocityX(-160)
-      this.player.anims.play('left', true)
+      //this.player.setVelocityX(-160)
+      //this.player.anims.play('left', true)
     } else if (keyRightObj.isDown === true) {
-      this.player.setVelocityX(160)
-      this.player.anims.play('right', true)
+      //this.player.setVelocityX(160)
+      //this.player.anims.play('right', true)
     }
     else {
-      this.player.setVelocityX(0)
-      this.player.anims.play('turn');
+      //this.player.setVelocityX(0)
+      //this.player.anims.play('turn');
     }
 
-    if (keySpaceObj.isDown === true && this.player.body.touching.down) {
-      this.player.setVelocityY(-330)
-    }
+    //if (keySpaceObj.isDown === true && this.player.body.touching.down) {
+      //this.player.setVelocityY(-330)
+    //}
   }
 }
 
