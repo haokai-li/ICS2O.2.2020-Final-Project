@@ -32,7 +32,8 @@ class GameScene extends Phaser.Scene {
       this.energy -= 100
       this.energyText.setText('Energy: ' + this.energy.toString())
       const defender = this.physics.add.sprite(x, y, 'defender').setScale(3.5)
-      // Makes the defenders
+      // Makes the defenders shoot
+      defender.shooting = false
       defender.shootingTimer = null
       defender.shootingTimer = this.time.addEvent({ delay: 2000, callback: this.createLaser, callbackScope: this, args: [x, y], loop: true });
       defender.shootingTimer.paused = true;
@@ -42,7 +43,7 @@ class GameScene extends Phaser.Scene {
 
   // Creates a laser
   createLaser (x, y) {
-    const laser = this.physics.add.sprite(x, y, 'laser')
+    const laser = this.physics.add.sprite(x, y, 'laser').setScale(1.25)
     this.laserGroup.add(laser)
   }
 
@@ -51,7 +52,10 @@ class GameScene extends Phaser.Scene {
     // Gets a y coordinate corresponding with one of the five rows
     const monsterYLocation = ((Math.floor(Math.random() * 5) + 1) * 180) + 90
     const monster = this.physics.add.sprite(1920, monsterYLocation, 'monster').setScale(0.20)
-    monster.body.velocity.x = -20
+    monster.body.velocity.x = -40
+    monster.health = 100
+    this.monsterYPositions.push(monsterYLocation)
+    console.log(this.monsterYPositions)
     this.monsterGroup.add(monster)
     console.log('Created new monster')
     if (this.monsterDelay > 3000) {
@@ -80,6 +84,7 @@ class GameScene extends Phaser.Scene {
     this.monsterTimer = null
     this.monsterDelay = 8000
     this.timedEvent = null
+    this.monsterYPositions = []
   }
 
   init (data) {
@@ -108,7 +113,7 @@ class GameScene extends Phaser.Scene {
     this.gameGridCellGroup = this.add.group()
     this.createGameGrid(96, 270)
 
-    // Checks if a cell has been clicked by the pointer
+    // Checks if a cell has been clicked by the pointer then places a defender
     this.gameGridCellGroup.children.each(function(cell) {
       cell.on('pointerdown', () => this.createDefender(cell.x, cell.y))
       cell.on('pointerup', function() {
@@ -130,6 +135,17 @@ class GameScene extends Phaser.Scene {
 
     // Start timer for energy production
     this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
+
+    // Collisions between lasers and monsters
+    this.physics.add.collider(this.laserGroup, this.monsterGroup, function (laserCollide, monsterCollide, health) {
+      monsterCollide.health -= 20
+      laserCollide.destroy()
+    }.bind(this))
+
+    // Collisions between lasers and monsters
+    this.physics.add.collider(this.defenderGroup, this.monsterGroup, function (defenderCollide, monsterCollide) {
+      defenderCollide.destroy()
+    }.bind(this))
   }
 
   update (time, delta) {
@@ -143,12 +159,40 @@ class GameScene extends Phaser.Scene {
       })
     })
 
-    this.laserGroup.children.each(function (item) {
-      item.x = item.x + 5
-      if (item.x > 1920) {
-        item.destroy()
+    // Makes lasers move
+    this.laserGroup.children.each(function(laser) {
+      laser.x += 5
+      if (laser.x > 1920) {
+        laser.destroy()
       }
     })
+    
+    // Makes defenders only shoot if a monster is on their row
+    this.defenderGroup.children.each(function(defender) {
+      if (this.monsterYPositions.includes(defender.y)) {
+        defender.shootingTimer.paused = false
+      } else {
+        defender.shootingTimer.paused = true
+      }
+    }.bind(this))
+
+    // Destroys montsers if their health is below 0
+    this.monsterGroup.children.each(function(monster) {
+      if (monster.health <= 0) {
+        monster.destroy()
+        const index = this.monsterYPositions.indexOf(monster.y);
+        if (index > -1) {
+        this.monsterYPositions.splice(index, 1)
+        } 
+        console.log(this.monsterYPositions)
+      }
+    }.bind(this))
+
+    // Keep velocity of monsters the same
+    this.monsterGroup.children.each(function(monster) {
+      monster.body.velocity.x = -40
+    })
+
   }
 }
 
