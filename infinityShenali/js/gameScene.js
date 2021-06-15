@@ -26,7 +26,7 @@ class GameScene extends Phaser.Scene {
     console.log('Game Scene')
 
     // spritesheets
-    this.load.spritesheet('squareSprite', './assets/squareSprite.png', { frameWidth: 192, frameHeight: 192 })
+    this.load.spritesheet('squareSprite', './assets/squareSprite.png', { frameWidth: 48, frameHeight: 48 })
 
     // images
     this.load.image('scene1_galaxyBackground', './assets/galaxyBackground.jpg')
@@ -49,7 +49,7 @@ class GameScene extends Phaser.Scene {
     this.platforms.create(750, 220, 'ground')
 
     // player
-    this.player = this.physics.add.sprite (100, 450, 'squareSprite');
+    this.player = this.physics.add.sprite (100, 200, 'squareSprite');
     //this.player.frame = 0;  
 
     this.player.setBounce(0.2);
