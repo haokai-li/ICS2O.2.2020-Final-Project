@@ -65,8 +65,8 @@ class GameScene extends Phaser.Scene {
     const keySpaceObj = this.input.keyboard.addKey('SPACE') // Get key object
     const keyLeftObj = this.input.keyboard.addKey('LEFT') // Get key object
     const keyRightObj = this.input.keyboard.addKey('RIGHT') // Get key object
-    const keyRightObj = this.input.keyboard.addKey('UP') // Get key object
-    const keyRightObj = this.input.keyboard.addKey('DOWN') // Get key object
+    const keyUpObj = this.input.keyboard.addKey('UP') // Get key object
+    const keyDownObj = this.input.keyboard.addKey('DOWN') // Get key object
 
     if (keyLeftObj.isDown === true) {
       this.player.setVelocityX(-160)
