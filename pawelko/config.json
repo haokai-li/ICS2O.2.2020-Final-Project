@@ -1,0 +1,12 @@
+{
+  "preset": "default",
+
+  "default": {
+    "history": 10,
+    "threshold": 0.003,
+    "timeout": 10,
+    "shutdown": null,
+    "sneak": null,
+    "logfile": null
+  }
+}

@@ -1,23 +1,23 @@
-/* Final assignment */
+/* global Phaser */
 
-// Copyright (c) 2021 haokai All rights reserved
+// Copyright (c) 2021 Ryan-Shaw-2 All rights reserved
 //
-// Created by: haokai
-// Created on: Jun 2021
-// This is the Final assignment configuration file
+// Created by: Ryan-Shaw-2
+// Created on: Apr 2021
+// This is the Phaser3 configuration file
 
 import SplashScene from './splashScene.js'
 import TitleScene from './titleScene.js'
 import MenuScene from './menuScene.js'
 import GameScene from './gameScene.js'
 
-// Our game scene
+// Our game Scenes
 const splashScene = new SplashScene()
 const titleScene = new TitleScene()
 const menuScene = new MenuScene()
 const gameScene = new GameScene()
 
-//* Game scene */
+//* Game Scene */
 const config = {
   type: Phaser.AUTO,
   width: 1920,
