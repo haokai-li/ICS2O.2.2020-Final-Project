@@ -38,7 +38,7 @@ class GameScene extends Phaser.Scene {
   }
 
   create (data) {
-    this.background = this.add.image(0, 0, 'scene1_galaxyBackground')//.setScale(2.0)
+    this.background = this.add.image(0, 0, 'scene1_galaxyBackground')
     this.background.setOrigin(0, 0)
 
     // platforms
@@ -78,10 +78,6 @@ class GameScene extends Phaser.Scene {
       this.player.setVelocityX(160)
       this.player.anims.play('right', true)
     }
-    //else {
-    //  this.player.setVelocityX(0)
-    //  this.player.anims.play('turn');
-    //}
 
     if (keySpaceObj.isDown === true && this.player.body.touching.down) {
       this.player.setVelocityY(-330)
