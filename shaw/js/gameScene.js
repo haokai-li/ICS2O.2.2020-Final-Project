@@ -169,14 +169,15 @@ class GameScene extends Phaser.Scene {
       laserCollide.destroy()
     }.bind(this))
 
-    // Collisions between lasers and monsters
+    // Collisions between defenders and monsters
     this.physics.add.collider(this.defenderGroup, this.monsterGroup, function (defenderCollide, monsterCollide, defenderPosition) {
       defenderCollide.shootingTimer.remove()
-      defenderCollide.destroy()
-      const removeDefenderPosition = this.defenderPositions.indexOf(defenderPosition);
-      if (removeDefenderPosition > -1) {
-      this.defenderPositions.splice(removeDefenderPosition, 1)
+      const removePosition = this.defenderPositions.indexOf(defenderCollide.x + defenderCollide.y);
+      if (removePosition > -1) {
+        this.defenderPositions.splice(removePosition, 1)
       }
+      console.log(this.defenderPositions)
+      defenderCollide.destroy()
     }.bind(this))
   }
 
