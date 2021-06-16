@@ -8,25 +8,16 @@
 //change
 
 class GameScene extends Phaser.Scene {
-  // create an alien
-  createAlien () {
-    const alienXLocation = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920
-    let alienXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50
-    alienXVelocity *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
-    const anAlien = this.physics.add.sprite(alienXLocation, -100, 'alien')
-    anAlien.body.velocity.y = 200
-    anAlien.body.velocity.x = alienXVelocity
-    this.alienGroup.add(anAlien)
-  }
-
   constructor () {
     super({ key: 'gameScene' })
 
     this.background = null
     this.ship = null
-    this.fireMissle = false
     this.startTime = true
+    this.timeAlien = true
     this.timeb = 0
+    this.timee = 0
+    this.timeTime = 0
     this.score = 0
     this.scoreText = null
     this.scoreTextStyle = { font: '65px Arial', fill: '#ffffff', align: 'center' }
@@ -62,7 +53,6 @@ class GameScene extends Phaser.Scene {
 
     // create a group for the aliens
     this.alienGroup = this.add.group()
-    this.createAlien()
 
     // Colliosions between ship and aliens
     this.physics.add.collider(this.ship, this.alienGroup, function (shipCollide, alienCollide) {
@@ -86,7 +76,6 @@ class GameScene extends Phaser.Scene {
     // get time of index start
     let timea = Math.floor(time / 1000)
     let timec = 0 - Math.floor(time / 1000)
-
     // get time of runing of splash, title and menu
     if (this.startTime == true) {
       this.startTime = false
@@ -124,13 +113,34 @@ class GameScene extends Phaser.Scene {
         this.ship.y = 1080
       }
     }
-    
+    //this destroy old aliens
     this.alienGroup.children.each(function (item) {
       if (item.y > 1080) {
         item.destroy()
         console.log('ok')
       }
     })
+
+    // this create alien each 2 seconds
+    if (this.timeAlien === true) {
+      this.timee = timec
+      this.timeAlien = false
+      const alienXLocation = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920
+      let alienXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50
+      alienXVelocity *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
+      const anAlien = this.physics.add.sprite(alienXLocation, -100, 'alien')
+      anAlien.body.velocity.y = 200
+      anAlien.body.velocity.x = alienXVelocity
+      this.alienGroup.add(anAlien)
+    }
+
+    if (this.timeAlien === false) {
+      this.timeTime = Math.floor(time / 1000) + this.timee
+      if (this.timeTime == 2) {
+        this.timeAlien = true
+      }
+    }
+    console.log(this.timeTime)
   }
 }
 
