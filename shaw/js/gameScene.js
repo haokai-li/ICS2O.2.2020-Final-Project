@@ -28,10 +28,13 @@ class GameScene extends Phaser.Scene {
 
   // Creates a defender
   createDefender (x, y) {
-    if (this.energy >= 100) {
+    if (this.energy >= 100 && this.defenderPositions.indexOf(x + y) === -1) {
       this.energy -= 100
       this.energyText.setText('Energy: ' + this.energy.toString())
       const defender = this.physics.add.sprite(x, y, 'defender').setScale(3.5)
+      defender.defenderPosition = x + y
+      this.defenderPositions.push(defender.defenderPosition)
+      console.log(this.defenderPositions)
       // Makes the defenders shoot
       defender.shooting = false
       defender.shootingTimer = null
@@ -55,7 +58,6 @@ class GameScene extends Phaser.Scene {
     monster.body.velocity.x = -40
     monster.health = 100
     this.monsterYPositions.push(monsterYLocation)
-    console.log(this.monsterYPositions)
     this.monsterGroup.add(monster)
     console.log('Created new monster')
     if (this.monsterDelay > 3000) {
@@ -105,6 +107,7 @@ class GameScene extends Phaser.Scene {
     this.monsterTimer = null
     this.monsterDelay = 8000
     this.monsterYPositions = []
+    this.defenderPositions = []
     this.gameOver = null
   }
 
@@ -167,9 +170,13 @@ class GameScene extends Phaser.Scene {
     }.bind(this))
 
     // Collisions between lasers and monsters
-    this.physics.add.collider(this.defenderGroup, this.monsterGroup, function (defenderCollide, monsterCollide, shootingTimer) {
+    this.physics.add.collider(this.defenderGroup, this.monsterGroup, function (defenderCollide, monsterCollide, defenderPosition) {
       defenderCollide.shootingTimer.remove()
       defenderCollide.destroy()
+      const removeDefenderPosition = this.defenderPositions.indexOf(defenderPosition);
+      if (removeDefenderPosition > -1) {
+      this.defenderPositions.splice(removeDefenderPosition, 1)
+      }
     }.bind(this))
   }
 
@@ -211,7 +218,6 @@ class GameScene extends Phaser.Scene {
         if (removeMonsterY > -1) {
         this.monsterYPositions.splice(removeMonsterY, 1)
         } 
-        console.log(this.monsterYPositions)
       }
     }.bind(this))
 
