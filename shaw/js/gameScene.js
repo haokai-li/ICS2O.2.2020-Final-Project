@@ -14,8 +14,6 @@ class GameScene extends Phaser.Scene {
         const cell = this.add.rectangle(x, y, 192, 180).setInteractive()
         cell.setStrokeStyle(2, 0x000000)
         cell.alpha = 0.01
-        cell.cellClicked = false
-        cell.defenderPlaced = false
         this.gameGridCellGroup.add(cell)
         x += 192
       }
@@ -34,7 +32,6 @@ class GameScene extends Phaser.Scene {
       const defender = this.physics.add.sprite(x, y, 'defender').setScale(3.5)
       defender.defenderPosition = x + y
       this.defenderPositions.push(defender.defenderPosition)
-      console.log(this.defenderPositions)
       // Makes the defenders shoot
       defender.shooting = false
       defender.shootingTimer = null
@@ -75,7 +72,7 @@ class GameScene extends Phaser.Scene {
       this.energy += 25
       this.energyText.setText('Energy: ' + this.energy.toString())
       console.log('+25 energy')
-      this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
+      this.energyTimer = this.time.delayedCall(5000, this.addEnergy, [], this)
     }
   }
 
@@ -83,6 +80,7 @@ class GameScene extends Phaser.Scene {
   restartGame () {
     this.scene.start('gameScene')
     this.gameOver = false
+    this.gameReset = true
     this.energy = 200
     this.energyText.setText('Energy: ' + this.energy.toString())
     this.score = 0
@@ -90,6 +88,12 @@ class GameScene extends Phaser.Scene {
     this.monsterDelay = 8000
     this.monsterYPositions = []
     console.log('Game Reset')
+  }
+
+  // Plays game music
+  playMusic () {
+    this.sound.play('gameMusic', {volume: 0.25})
+    this.musicTimer = this.time.delayedCall(102000, this.playMusic, [], this)
   }
 
   constructor () {
@@ -105,10 +109,12 @@ class GameScene extends Phaser.Scene {
     this.gameOverTextStyle = { font: '65px Arial', fill: '#000000', align: 'center' }
     this.energyTimer = null
     this.monsterTimer = null
+    this.musicTimer = null
     this.monsterDelay = 8000
     this.monsterYPositions = []
     this.defenderPositions = []
     this.gameOver = null
+    this.gameReset = false
   }
 
   init (data) {
@@ -123,12 +129,21 @@ class GameScene extends Phaser.Scene {
     this.load.image('defender', 'assets/spaceMarine.png')
     this.load.image('monster', 'assets/monster.png')
     this.load.image('laser', 'assets/laser.png')
+
+    // Audio
+    this.load.audio('gameMusic', 'assets/gameMusic.mp3')
+    this.load.audio('splat', 'assets/splat.mp3')
   }
 
   create (data) {
     // Background
     this.background = this.add.image(0, 0, 'gameSceneBackground')
     this.background.setOrigin(0, 0)
+
+    // Play Music
+    if (this.gameReset === false) {
+      this.playMusic()
+    }
 
     // Energy text
     this.energyText = this.add.text(10, 10, 'Energy: ' + this.energy.toString(), this.energyTextStyle)
@@ -165,7 +180,8 @@ class GameScene extends Phaser.Scene {
 
     // Collisions between lasers and monsters
     this.physics.add.collider(this.laserGroup, this.monsterGroup, function (laserCollide, monsterCollide, health,) {
-      monsterCollide.health -= 20
+      monsterCollide.health -= 10
+      this.sound.play('splat', {volume: 0.1})
       laserCollide.destroy()
     }.bind(this))
 
