@@ -124,6 +124,13 @@ class GameScene extends Phaser.Scene {
         this.ship.y = 1080
       }
     }
+    
+    this.alienGroup.children.each(function (item) {
+      if (item.y > 1080) {
+        item.destroy()
+        console.log('ok')
+      }
+    })
   }
 }
 
