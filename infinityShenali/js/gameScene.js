@@ -82,9 +82,15 @@ class GameScene extends Phaser.Scene {
     this.portal = this.add.sprite (1500, 730, 'scene1_portal')
 
     // spike
-    this.spike = this.physics.add.sprite (1200, 480, 'scene1_spike')
+    this.spike = this.physics.add.staticGroup()
+    this.spike.create(1200, 480, 'scene1_spike')
+    this.spike.create(1190, 480, 'scene1_spike')
+    this.spike.create(1000, 480, 'scene1_spike')
 
-    // coin 
+    // coin
+
+    // sign posts
+    this.signPost1 = this.add.sprite (500, 175, 'scene1_signPost').setScale(0.8)
 
     // player
     this.player = this.physics.add.sprite (100, 199, 'scene1_squareSprite');
@@ -95,7 +101,7 @@ class GameScene extends Phaser.Scene {
     this.anims.create({
       key: 'left',
       frames: this.anims.generateFrameNumbers('scene1_squareSprite', { start: 0, end: 1 }),
-      frameRate: 10,
+      frameRate: 5,
       repeat: -1
     })
 
@@ -104,6 +110,9 @@ class GameScene extends Phaser.Scene {
 
     // collision between spikes and platforms
     this.physics.add.collider(this.spike, this.platforms)
+
+    //collision between spikes and player
+    this.physics.add.collider(this.spike, this.player)
   }
 
   update (time, delta) {
