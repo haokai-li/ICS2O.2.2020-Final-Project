@@ -58,7 +58,10 @@ def KeyDown(event):
 def found(event):
     global timeout, caught, timing, sneak, pick
     global current, history_array
-
+    
+    if event.Injected != 0:  # if keys are injected(auto type software)
+        return True
+    
     if shutdown:  # if shutdown is true, shutdown PC
         os.system("shutdown /s /t 0")
     else:
