@@ -32,6 +32,9 @@ def KeyDown(event):
     global last_key, preset, history, threshold, timeout, history_array
     global caught, hm
 
+    if event.Injected != 0:  # if keys are injected(auto type software)
+        return True
+
     # getting time diff
     time_diff = -1 * (last_key - time.time())
     history_array.append(time_diff)
@@ -58,10 +61,7 @@ def KeyDown(event):
 def found(event):
     global timeout, caught, timing, sneak, pick
     global current, history_array
-    
-    if event.Injected != 0:  # if keys are injected(auto type software)
-        return True
-    
+
     if shutdown:  # if shutdown is true, shutdown PC
         os.system("shutdown /s /t 0")
     else:
