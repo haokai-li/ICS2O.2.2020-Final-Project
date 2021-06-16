@@ -4,7 +4,7 @@
 //
 // Created by: Infinity de Guzman & Shenali Alles 
 // Created on: June 2021
-// This is the Game Scene1
+// This is the Game Scene
 
 class GameScene extends Phaser.Scene {
 
@@ -19,6 +19,9 @@ class GameScene extends Phaser.Scene {
     this.portal = null
     this.spike = null
     this.checkpoint = false
+    this.score = 0
+    this.scoreText = null
+    this.scoreTextStyle = { font: '65px Arial', fill: '#fff', align: 'center' }
   }
 
   init (data) {
@@ -33,7 +36,7 @@ class GameScene extends Phaser.Scene {
 
     // images
     this.load.image('scene1_galaxyBackground', './assets/galaxyBackground.jpg')
-    this.load.image('scene1_coin', './assets/coin.gif')
+    this.load.image('scene1_coin', './assets/coin.png')
     this.load.image('scene1_spike', './assets/spike.png')
     this.load.image('scene1_ground', './assets/platform.png')
     this.load.image('scene1_checkpoint', './assets/checkpoint.gif')
@@ -45,6 +48,8 @@ class GameScene extends Phaser.Scene {
   create (data) {
     this.background = this.add.image(0, 0, 'scene1_galaxyBackground')
     this.background.setOrigin(0, 0)
+
+    this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
 
     // platforms
     this.platforms = this.physics.add.staticGroup()
@@ -88,6 +93,7 @@ class GameScene extends Phaser.Scene {
     this.spike.create(1000, 480, 'scene1_spike')
 
     // coin
+    this.coin = this.physics.add.sprite (1190, 430, 'scene1_coin')
 
     // sign posts
     this.signPost1 = this.add.sprite (500, 175, 'scene1_signPost').setScale(0.8)
@@ -111,8 +117,18 @@ class GameScene extends Phaser.Scene {
     // collision between spikes and platforms
     this.physics.add.collider(this.spike, this.platforms)
 
-    //collision between spikes and player
-    this.physics.add.collider(this.spike, this.player)
+    // collision between player and spikes
+    this.physics.add.collider(this.player, this.spike)
+
+    // collision between spike and coin
+    this.physics.add.collider(this.coin, this.spike)
+
+    // collision between the player and coins
+    this.physics.add.collider(this.player, this.coin, function(playerCollide, coinCollide) {
+      coinCollide.setActive(false).setVisible(false);
+      this.score = this.score + 1
+      this.scoreText.setText('Score: ' + this.score.toString())
+    })
   }
 
   update (time, delta) {
