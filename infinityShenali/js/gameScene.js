@@ -21,7 +21,7 @@ class GameScene extends Phaser.Scene {
     this.checkpoint = false
     this.score = 0
     this.scoreText = null
-    this.scoreTextStyle = { font: '65px Arial', fill: '#fff', align: 'center' }
+    this.scoreTextStyle = { font: '45px Arial', fill: '#fff', align: 'center' }
   }
 
   init (data) {
@@ -93,7 +93,8 @@ class GameScene extends Phaser.Scene {
     this.spike.create(1000, 480, 'scene1_spike')
 
     // coin
-    this.coin = this.physics.add.sprite (1190, 430, 'scene1_coin')
+    this.coin = this.physics.add.staticGroup()
+    this.coin.create(1190, 430, 'scene1_coin')
 
     // sign posts
     this.signPost1 = this.add.sprite (500, 175, 'scene1_signPost').setScale(0.8)
@@ -125,10 +126,10 @@ class GameScene extends Phaser.Scene {
 
     // collision between the player and coins
     this.physics.add.collider(this.player, this.coin, function(playerCollide, coinCollide) {
-      coinCollide.setActive(false).setVisible(false);
+      coinCollide.destroy();
       this.score = this.score + 1
       this.scoreText.setText('Score: ' + this.score.toString())
-    })
+    }.bind(this))
   }
 
   update (time, delta) {
