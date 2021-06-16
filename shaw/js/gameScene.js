@@ -86,6 +86,7 @@ class GameScene extends Phaser.Scene {
     this.scoreText.setText('Score: ' + this.score.toString())
     this.monsterDelay = 8000
     this.monsterYPositions = []
+    this.defenderPositions = []
     console.log('Game Reset')
   }
 
@@ -99,7 +100,7 @@ class GameScene extends Phaser.Scene {
     super({ key: 'gameScene' })
 
     this.background = null
-    this.energy = 200
+    this.energy = 100
     this.score = 0
     this.energyText = null
     this.scoreText = null
@@ -237,7 +238,7 @@ class GameScene extends Phaser.Scene {
       }
     }.bind(this))
 
-    // Keep velocity of monsters the same
+    // Keep velocity of monsters consistant
     this.monsterGroup.children.each(function(monster) {
       monster.body.velocity.x = -40
     })
