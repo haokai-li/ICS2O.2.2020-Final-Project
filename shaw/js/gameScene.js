@@ -33,7 +33,6 @@ class GameScene extends Phaser.Scene {
       defender.defenderPosition = x + y
       this.defenderPositions.push(defender.defenderPosition)
       // Makes the defenders shoot
-      defender.shooting = false
       defender.shootingTimer = null
       defender.shootingTimer = this.time.addEvent({ delay: 2000, callback: this.createLaser, callbackScope: this, args: [x, y], loop: true });
       defender.shootingTimer.paused = true;
