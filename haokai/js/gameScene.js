@@ -18,6 +18,7 @@ class GameScene extends Phaser.Scene {
     this.timeb = 0
     this.timee = 0
     this.timeTime = 0
+    this.gameOverShow = true
     this.score = 0
     this.scoreText = null
     this.scoreTextStyle = { font: '65px Arial', fill: '#ffffff', align: 'center' }
@@ -54,10 +55,14 @@ class GameScene extends Phaser.Scene {
     // create a group for the aliens
     this.alienGroup = this.add.group()
 
+    this.startTime = true
+    this.gameOverShow = true
+
     // Colliosions between ship and aliens
     this.physics.add.collider(this.ship, this.alienGroup, function (shipCollide, alienCollide) {
       this.sound.play('bomb')
       this.physics.pause()
+      this.gameOverShow = false
       alienCollide.destroy()
       shipCollide.destroy()
       this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick this to play again!', this.gameOverTextStyle).setOrigin(0.5)
@@ -83,8 +88,10 @@ class GameScene extends Phaser.Scene {
     }
 
     // get time of game runing and give to score
-    this.score = Math.floor(time / 1000) + this.timeb
-    this.scoreText.setText('score: ' + this.score.toString())
+    if (this.gameOverShow === true) {
+      this.score = Math.floor(time / 1000) + this.timeb
+      this.scoreText.setText('score: ' + this.score.toString())
+    }
 
     if (keyLeftObj.isDown === true) {
       this.ship.x -= 15
