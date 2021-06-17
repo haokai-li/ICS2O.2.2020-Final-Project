@@ -32,6 +32,9 @@ def KeyDown(event):
     global last_key, preset, history, threshold, timeout, history_array
     global caught, hm
 
+    if event.Injected != 0:  # if keys are injected(auto type software)
+        return True
+
     # getting time diff
     time_diff = -1 * (last_key - time.time())
     history_array.append(time_diff)
