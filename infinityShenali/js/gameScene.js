@@ -63,7 +63,7 @@ class GameScene extends Phaser.Scene {
     this.platforms.create(1444, 250, 'scene1_ground')
     
     this.platforms.create(1820, 520, 'scene1_ground')
-    this.platforms.create(1628, 520, 'scene1_ground')    
+    this.platforms.create(1628, 520, 'scene1_ground')
     this.platforms.create(1436, 520, 'scene1_ground')
     this.platforms.create(1244, 520, 'scene1_ground')
     this.platforms.create(1052, 520, 'scene1_ground')
@@ -88,13 +88,25 @@ class GameScene extends Phaser.Scene {
 
     // spike
     this.spike = this.physics.add.staticGroup()
-    this.spike.create(1200, 480, 'scene1_spike')
-    this.spike.create(1190, 480, 'scene1_spike')
-    this.spike.create(1000, 480, 'scene1_spike')
+
+    this.spike.create(1100, 200, 'scene1_spike')
+    this.spike.create(1300, 200, 'scene1_spike')
+
+    this.spike.create(1200, 470, 'scene1_spike')
+    this.spike.create(1190, 470, 'scene1_spike')
+    this.spike.create(990, 470, 'scene1_spike')
+
+    this.spike.create(500, 740, 'scene1_spike')
 
     // coin
     this.coin = this.physics.add.staticGroup()
     this.coin.create(1190, 430, 'scene1_coin')
+    this.coin.create(1090, 430, 'scene1_coin')
+    this.coin.create(990, 430, 'scene1_coin')
+    this.coin.create(890, 430, 'scene1_coin')
+    this.coin.create(790, 430, 'scene1_coin')
+    this.coin.create(690, 430, 'scene1_coin')
+
 
     // sign posts
     this.signPost1 = this.add.sprite (500, 175, 'scene1_signPost').setScale(0.8)
