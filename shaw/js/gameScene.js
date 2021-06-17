@@ -116,7 +116,7 @@ class GameScene extends Phaser.Scene {
     super({ key: 'gameScene' })
 
     this.background = null
-    this.energy = 500
+    this.energy = 50
     this.score = 0
     this.energyText = null
     this.scoreText = null
