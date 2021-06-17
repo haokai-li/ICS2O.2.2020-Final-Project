@@ -200,7 +200,6 @@ class GameScene extends Phaser.Scene {
       if (removePosition > -1) {
         this.defenderPositions.splice(removePosition, 1)
       }
-      console.log(this.defenderPositions)
       defenderCollide.destroy()
     }.bind(this))
   }
@@ -265,16 +264,13 @@ class GameScene extends Phaser.Scene {
     // Waves of monsters (extra)
     if (this.monsterDelay === 3000) {
       this.monsterDelay = 8000
-      this.createOne = null
-      // each function only creates one monster and doesn't start monster timer
-      this.createMonster(this.createOne = true)
-      this.createMonster(this.createOne = true)
-      this.createMonster(this.createOne = true)
-      this.createMonster(this.createOne = true)
-      this.createMonster(this.createOne = true)
-      this.createMonster(this.createOne = true)
-      this.createMonster(this.createOne = true)
-      this.createMonster(this.createOne = true)
+      this.numberOfMonsters = 8
+      this.monstersSpawned = 0
+      while (this.numberOfMonsters > this.monstersSpawned) {
+        this.createMonster(this.createOne = true)
+        this.monstersSpawned += 1
+      }
+      this.monstersSpawned = 0
       this.numberOfWaves += 1
     }
   }
