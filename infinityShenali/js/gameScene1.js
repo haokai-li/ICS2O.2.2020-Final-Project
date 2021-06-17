@@ -14,7 +14,8 @@ class GameScene1 extends Phaser.Scene {
     this.player = null
     this.platforms = null
     this.background = null
-    this.signPost = null
+    this.signPost1 = null
+    this.signPost2 = null
     this.coin = null
     this.portal = null
     this.spike = null
@@ -109,9 +110,8 @@ class GameScene1 extends Phaser.Scene {
 
 
     // sign posts
-    this.signPost = this.physics.add.staticGroup()
-    this.signPost.create(100, 175, 'scene1_signPost').setScale(0.8)
-    this.signPost.create(1700, 445, 'scene1_signPost').setScale(0.8)
+    this.signPost1 = this.add.sprite(100, 175, 'scene1_signPost').setScale(0.8)
+    this.signPost2 = this.add.sprite(1700, 445, 'scene1_signPost').setScale(0.8)
 
     // player
     this.player = this.physics.add.sprite (100, 199, 'scene1_squareSprite');
