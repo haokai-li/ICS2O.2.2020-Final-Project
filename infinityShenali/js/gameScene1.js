@@ -121,7 +121,14 @@ class GameScene1 extends Phaser.Scene {
 
     this.anims.create({
       key: 'left',
-      frames: this.anims.generateFrameNumbers('scene1_squareSprite', { start: 0, end: 1 }),h
+      frames: this.anims.generateFrameNumbers('scene1_squareSprite', { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers('scene1_squareSprite', { start: 0, end: 1 }),
       frameRate: 5,
       repeat: -1
     })
