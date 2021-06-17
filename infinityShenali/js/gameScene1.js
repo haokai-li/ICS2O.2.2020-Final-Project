@@ -6,10 +6,10 @@
 // Created on: June 2021
 // This is the Game Scene
 
-class GameScene extends Phaser.Scene {
+class GameScene1 extends Phaser.Scene {
 
   constructor () {
-    super({ key: 'gameScene' })
+    super({ key: 'gameScene1' })
 
     this.player = null
     this.platforms = null
@@ -89,12 +89,12 @@ class GameScene extends Phaser.Scene {
     // spike
     this.spike = this.physics.add.staticGroup()
 
-    this.spike.create(1100, 200, 'scene1_spike')
+    this.spike.create(900, 200, 'scene1_spike')
     this.spike.create(1300, 200, 'scene1_spike')
 
     this.spike.create(1200, 470, 'scene1_spike')
     this.spike.create(1190, 470, 'scene1_spike')
-    this.spike.create(990, 470, 'scene1_spike')
+    this.spike.create(890, 470, 'scene1_spike')
 
     this.spike.create(500, 740, 'scene1_spike')
 
@@ -109,7 +109,9 @@ class GameScene extends Phaser.Scene {
 
 
     // sign posts
-    this.signPost1 = this.add.sprite (500, 175, 'scene1_signPost').setScale(0.8)
+    this.signPost = this.physics.add.staticGroup()
+    this.signPost.create(100, 175, 'scene1_signPost').setScale(0.8)
+    this.signPost.create(1700, 445, 'scene1_signPost').setScale(0.8)
 
     // player
     this.player = this.physics.add.sprite (100, 199, 'scene1_squareSprite');
@@ -119,7 +121,7 @@ class GameScene extends Phaser.Scene {
 
     this.anims.create({
       key: 'left',
-      frames: this.anims.generateFrameNumbers('scene1_squareSprite', { start: 0, end: 1 }),
+      frames: this.anims.generateFrameNumbers('scene1_squareSprite', { start: 0, end: 1 }),h
       frameRate: 5,
       repeat: -1
     })
@@ -131,10 +133,17 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.spike, this.platforms)
 
     // collision between player and spikes
-    this.physics.add.collider(this.player, this.spike)
+    this.physics.add.collider(this.player, this.spike, function() {
+      this.player.setPosition(100, 199)
+    }.bind(this))
 
     // collision between spike and coin
     this.physics.add.collider(this.coin, this.spike)
+    
+    // collision between spikes and checkpoint
+    this.physics.add.collider(this.spike, this.checkpoint, function() {
+      this.player.setPosition(200, 199)
+    }.bind(this))
 
     // collision between the player and coins
     this.physics.add.collider(this.player, this.coin, function(playerCollide, coinCollide) {
@@ -164,4 +173,4 @@ class GameScene extends Phaser.Scene {
   }
 }
 
-export default GameScene
+export default GameScene1
