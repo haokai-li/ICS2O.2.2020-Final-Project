@@ -47,7 +47,7 @@ class GameScene extends Phaser.Scene {
   }
 
   // Creates a monster then sets a timer to create another
-  createMonster() {
+  createMonster(createOne) {
     // Gets a y coordinate corresponding with one of the five rows
     const monsterYLocation = ((Math.floor(Math.random() * 5) + 1) * 180) + 90
     const monster = this.physics.add.sprite(1920, monsterYLocation, 'monster').setScale(0.20)
@@ -56,25 +56,13 @@ class GameScene extends Phaser.Scene {
     this.monsterYPositions.push(monsterYLocation)
     this.monsterGroup.add(monster)
     console.log('Created new monster')
-    if (this.monsterDelay > 3000) {
+    if (this.monsterDelay > 3000 && createOne != true) {
       this.monsterDelay -= 250
       console.log('New delay is: ', this.monsterDelay)
     }
-    if (this.gameOver != true) {
+    if (this.gameOver != true && createOne != true ) {
       this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
     }
-  }
-
-  // Creates one monster without setting a timer to create another (extra)
-  createMonsterOnce() {
-    // Gets a y coordinate corresponding with one of the five rows
-    const monsterYLocation = ((Math.floor(Math.random() * 5) + 1) * 180) + 90
-    const monster = this.physics.add.sprite(1920, monsterYLocation, 'monster').setScale(0.20)
-    monster.body.velocity.x = -40
-    monster.health = 100
-    this.monsterYPositions.push(monsterYLocation)
-    this.monsterGroup.add(monster)
-    console.log('Created new monster')
   }
 
   // Energy production timer
@@ -277,14 +265,16 @@ class GameScene extends Phaser.Scene {
     // Waves of monsters (extra)
     if (this.monsterDelay === 3000) {
       this.monsterDelay = 8000
-      this.createMonsterOnce()
-      this.createMonsterOnce()
-      this.createMonsterOnce()
-      this.createMonsterOnce()
-      this.createMonsterOnce()
-      this.createMonsterOnce()
-      this.createMonsterOnce()
-      this.createMonsterOnce()
+      this.createOne = null
+      // each function only creates one monster and doesn't start monster timer
+      this.createMonster(this.createOne = true)
+      this.createMonster(this.createOne = true)
+      this.createMonster(this.createOne = true)
+      this.createMonster(this.createOne = true)
+      this.createMonster(this.createOne = true)
+      this.createMonster(this.createOne = true)
+      this.createMonster(this.createOne = true)
+      this.createMonster(this.createOne = true)
       this.numberOfWaves += 1
     }
   }
