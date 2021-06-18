@@ -13,9 +13,7 @@ class GameScene1 extends Phaser.Scene {
 
     this.player = null
     this.platforms = null
-    this.background = null
-    this.signPost1 = null
-    this.signPost2 = null
+    this.background = null    
     this.coin = null
     this.portal = null
     this.spike = null
@@ -23,6 +21,7 @@ class GameScene1 extends Phaser.Scene {
     this.score = 0
     this.scoreText = null
     this.scoreTextStyle = { font: '45px Arial', fill: '#fff', align: 'center' }
+    this.text1 = null
   }
 
   init (data) {
@@ -42,7 +41,7 @@ class GameScene1 extends Phaser.Scene {
     this.load.image('scene1_ground', './assets/platform.png')
     this.load.image('scene1_checkpoint', './assets/checkpoint.gif')
     this.load.image('scene1_portal', './assets/portal.gif')
-     this.load.image('scene1_signPost', './assets/signPost.gif')
+
     // sound
   }
 
@@ -51,6 +50,9 @@ class GameScene1 extends Phaser.Scene {
     this.background.setOrigin(0, 0)
 
     this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
+
+    this.text1 = this.add.text(0, 10, 'Use left, right, and down keys to move. Press the spacebar to jump.', this.scoreTextStyle)
+    this.text1.visible = false
 
     // platforms
     this.platforms = this.physics.add.staticGroup()
@@ -107,11 +109,6 @@ class GameScene1 extends Phaser.Scene {
     this.coin.create(890, 430, 'scene1_coin')
     this.coin.create(790, 430, 'scene1_coin')
     this.coin.create(690, 430, 'scene1_coin')
-
-
-    // sign posts
-    this.signPost1 = this.add.sprite(100, 175, 'scene1_signPost').setScale(0.8)
-    this.signPost2 = this.add.sprite(1700, 445, 'scene1_signPost').setScale(0.8)
 
     // player
     this.player = this.physics.add.sprite (100, 199, 'scene1_squareSprite');
