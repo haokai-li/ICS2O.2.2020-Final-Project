@@ -155,6 +155,11 @@ class GameScene1 extends Phaser.Scene {
       this.score = this.score + 1
       this.scoreText.setText('Score: ' + this.score.toString())
     }.bind(this))
+
+    //collision between player and portal
+    this.physics.add.collider(this.player, this.portal function() {
+      game.scene.start('gameScene2')
+    }
   }
 
   update (time, delta) {
