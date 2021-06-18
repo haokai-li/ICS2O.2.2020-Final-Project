@@ -49,10 +49,8 @@ class GameScene extends Phaser.Scene {
     // image
     this.load.image('starBackground', './assets/starBackground.png')
     this.load.image('ship', './assets/spaceShip.png')
-    this.load.image('missile', './assets/missile.png')
     this.load.image('alien', './assets/alien.png')
     // sound
-    this.load.audio('laser', './assets/laser1.wav')
     this.load.audio('explosion', './assets/barrelExploding.wav')
     this.load.audio('bomb', './assets/bomb.wav')
   }
@@ -69,6 +67,7 @@ class GameScene extends Phaser.Scene {
     // create a group for the aliens
     this.alienGroup = this.add.group()
 
+    // restart score
     this.startTime = true
     this.gameOverShow = true
 
@@ -107,6 +106,7 @@ class GameScene extends Phaser.Scene {
       this.scoreText.setText('score: ' + this.score.toString())
     }
 
+    // move of ship(Left)
     if (keyLeftObj.isDown === true) {
       this.ship.x -= 15
       if (this.ship.x < 0) {
@@ -114,6 +114,7 @@ class GameScene extends Phaser.Scene {
       }
     }
 
+    // move of ship(Right)
     if (keyRightObj.isDown === true) {
       this.ship.x += 15
       if (this.ship.x > 1920) {
@@ -121,6 +122,7 @@ class GameScene extends Phaser.Scene {
       }
     }
 
+    // move of ship(Up)
     if (keyUpObj.isDown === true) {
       this.ship.y -= 15
       if (this.ship.y < 0) {
@@ -128,32 +130,34 @@ class GameScene extends Phaser.Scene {
       }
     }
 
+    // move of ship(Down)
     if (keyDownObj.isDown === true) {
       this.ship.y += 15
       if (this.ship.y > 1080) {
         this.ship.y = 1080
       }
     }
+
     //this destroy old aliens
     this.alienGroup.children.each(function (item) {
       if (item.y > 1280) {
         item.destroy()
-        console.log('ok')
+        console.log('1')
       }
 
       if (item.y < -200) {
         item.destroy()
-        console.log('ok')
+        console.log('2')
       }
 
       if (item.x > 2020) {
         item.destroy()
-        console.log('ok')
+        console.log('3')
       }
 
       if (item.x < -200) {
         item.destroy()
-        console.log('ok')
+        console.log('4')
       }
     })
 
@@ -201,7 +205,7 @@ class GameScene extends Phaser.Scene {
     if (this.timeAlienThird === true) {
       this.timeeThird = timec
       this.timeAlienThird = false
-      const alienYLocationThird = Math.floor(Math.random() * 1080) + 1 // this will get a number between 1 and 1920
+      const alienYLocationThird = Math.floor(Math.random() * 1080) + 1 // this will get a number between 1 and 1080
       let alienYVelocityThird = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50
       alienYVelocityThird *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
       const anAlienThird = this.physics.add.sprite(-100, alienYLocationThird, 'alien')
@@ -221,7 +225,7 @@ class GameScene extends Phaser.Scene {
     if (this.timeAlienFourth === true) {
       this.timeeFourth = timec
       this.timeAlienFourth = false
-      const alienYLocationFourth = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920
+      const alienYLocationFourth = Math.floor(Math.random() * 1080) + 1 // this will get a number between 1 and 1080
       let alienYVelocityFourth = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50
       alienYVelocityFourth *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
       const anAlienFourth = this.physics.add.sprite(2020, alienYLocationFourth, 'alien')
