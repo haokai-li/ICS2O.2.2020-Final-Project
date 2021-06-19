@@ -51,9 +51,6 @@ class GameScene extends Phaser.Scene {
 
     this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
 
-    this.text1 = this.add.text(0, 10, 'Use left, right, and down keys to move. Press the spacebar to jump.', this.scoreTextStyle)
-    this.text1.visible = false
-
     // platforms
     this.platforms = this.physics.add.staticGroup()
     this.platforms.create(100, 250, 'scene1_ground')
