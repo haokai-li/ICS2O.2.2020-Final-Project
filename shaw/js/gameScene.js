@@ -26,16 +26,34 @@ class GameScene extends Phaser.Scene {
 
   // Creates a defender
   createDefender (x, y) {
-    if (this.energy >= 100 && this.defenderPositions.indexOf(x + y) === -1) {
+    // Soldier
+    if (this.defenderType === 1 && this.energy >= 100 && this.defenderPositions.indexOf(x + y) === -1) {
       this.energy -= 100
       this.energyText.setText('Energy: ' + this.energy.toString())
-      const defender = this.physics.add.sprite(x, y, 'defender').setScale(3.5)
+      const defender = this.physics.add.sprite(x, y, 'soldier').setScale(3.5)
       defender.defenderPosition = x + y
       this.defenderPositions.push(defender.defenderPosition)
-      // Makes the defenders shoot
+      // Defender attributes
+      defender.defenderShoots = true
+      defender.makesEnergy = false
+      // Makes the soldiers shoot
       defender.shootingTimer = null
       defender.shootingTimer = this.time.addEvent({ delay: 2000, callback: this.createLaser, callbackScope: this, args: [x, y], loop: true });
       defender.shootingTimer.paused = true;
+      this.defenderGroup.add(defender)
+      // Energy Generator (extra)
+    } else if (this.defenderType === 2 && this.energy >= 50 && this.defenderPositions.indexOf(x + y) === -1) {
+      this.energy -= 50
+      this.energyText.setText('Energy: ' + this.energy.toString())
+      const defender = this.physics.add.sprite(x, y, 'generator').setScale(2.0)
+      defender.defenderPosition = x + y
+      this.defenderPositions.push(defender.defenderPosition)
+      // Defender attributes
+      defender.defenderShoots = false
+      defender.makesEnergy = true
+      // Makes generator produce energy
+      defender.energyDelay = null
+      defender.energyDelay = this.time.addEvent({ delay: 15000, callback: this.generatorAddEnergy, callbackScope: this, loop: true });
       this.defenderGroup.add(defender)
     }
   }
@@ -46,8 +64,17 @@ class GameScene extends Phaser.Scene {
     this.laserGroup.add(laser)
   }
 
-  // Creates a monster
-  createMonster() {
+  // Adds energy to total (extra)
+  generatorAddEnergy () {
+    if (this.gameOver != true) {
+      this.energy += 25
+      this.energyText.setText('Energy: ' + this.energy.toString())
+      console.log('+25 energy')
+    }
+  }
+
+  // Creates a monster then sets a timer to create another
+  createMonster(createOne) {
     // Gets a y coordinate corresponding with one of the five rows
     const monsterYLocation = ((Math.floor(Math.random() * 5) + 1) * 180) + 90
     const monster = this.physics.add.sprite(1920, monsterYLocation, 'monster').setScale(0.20)
@@ -56,11 +83,11 @@ class GameScene extends Phaser.Scene {
     this.monsterYPositions.push(monsterYLocation)
     this.monsterGroup.add(monster)
     console.log('Created new monster')
-    if (this.monsterDelay > 3000) {
+    if (this.monsterDelay > 3000 && createOne != true) {
       this.monsterDelay -= 250
       console.log('New delay is: ', this.monsterDelay)
     }
-    if (this.gameOver != true) {
+    if (this.gameOver != true && createOne != true ) {
       this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
     }
   }
@@ -75,18 +102,24 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-  // Restart the game
+  // Restart the game variables
   restartGame () {
     this.scene.start('gameScene')
     this.gameOver = false
     this.gameReset = true
-    this.energy = 200
+    this.energy = 50
     this.energyText.setText('Energy: ' + this.energy.toString())
     this.score = 0
     this.scoreText.setText('Score: ' + this.score.toString())
-    this.monsterDelay = 8000
+    this.monsterDelay = 10000
     this.monsterYPositions = []
+    this.defenderPositions = []
     console.log('Game Reset')
+
+    // (extra)
+    this.numberOfWaves = 0
+    this.defenderType = 1
+    
   }
 
   // Plays game music
@@ -99,7 +132,7 @@ class GameScene extends Phaser.Scene {
     super({ key: 'gameScene' })
 
     this.background = null
-    this.energy = 200
+    this.energy = 50
     this.score = 0
     this.energyText = null
     this.scoreText = null
@@ -109,11 +142,18 @@ class GameScene extends Phaser.Scene {
     this.energyTimer = null
     this.monsterTimer = null
     this.musicTimer = null
-    this.monsterDelay = 8000
+    this.startDelay = null
+    this.monsterDelay = 10000
     this.monsterYPositions = []
     this.defenderPositions = []
     this.gameOver = null
     this.gameReset = false
+
+    // (extra)
+    this.defenderType = 1
+    this.defenderTypeText = null
+    this.defenderTypeTextStyle = { font: '40px Arial', fill: '#000000', align: 'left' }
+    this.numberOfWaves = 0
   }
 
   init (data) {
@@ -125,7 +165,8 @@ class GameScene extends Phaser.Scene {
 
     // Images
     this.load.image('gameSceneBackground', 'assets/gameSceneBackground.png')
-    this.load.image('defender', 'assets/spaceMarine.png')
+    this.load.image('soldier', 'assets/soldier.png')
+    this.load.image('generator', 'assets/energyGenerator.png')
     this.load.image('monster', 'assets/monster.png')
     this.load.image('laser', 'assets/laser.png')
 
@@ -139,16 +180,19 @@ class GameScene extends Phaser.Scene {
     this.background = this.add.image(0, 0, 'gameSceneBackground')
     this.background.setOrigin(0, 0)
 
-    // Play Music
-    if (this.gameReset === false) {
-      this.playMusic()
-    }
-
     // Energy text
     this.energyText = this.add.text(10, 10, 'Energy: ' + this.energy.toString(), this.energyTextStyle)
 
     // Score Text
     this.scoreText = this.add.text(10, 60, 'Score: ' + this.score.toString(), this.scoreTextStyle)
+
+    // Selected defender text
+    this.defenderTypeText = this.add.text(1300, 10, 'Selected Defender: Soldier (100E)', this.defenderTypeTextStyle)
+
+     // Play Music
+    if (this.gameReset === false) {
+      this.playMusic()
+    }
 
     // Game Grid cell group
     this.gameGridCellGroup = this.add.group()
@@ -171,11 +215,11 @@ class GameScene extends Phaser.Scene {
     // Monster group
     this.monsterGroup = this.add.group()
 
-    // Start Monster timer
-    this.monsterTimer = this.time.delayedCall(this.monsterDelay, this.createMonster, [], this)
+    // Delay start of monster spawning
+    this.startDelay = this.time.delayedCall(20000, this.createMonster, [], this)
 
     // Start timer for energy production
-    this.energyTimer = this.time.delayedCall(10000, this.addEnergy, [], this)
+    this.energyTimer = this.time.delayedCall(5000, this.addEnergy, [], this)
 
     // Collisions between lasers and monsters
     this.physics.add.collider(this.laserGroup, this.monsterGroup, function (laserCollide, monsterCollide, health,) {
@@ -185,13 +229,16 @@ class GameScene extends Phaser.Scene {
     }.bind(this))
 
     // Collisions between defenders and monsters
-    this.physics.add.collider(this.defenderGroup, this.monsterGroup, function (defenderCollide, monsterCollide, defenderPosition) {
-      defenderCollide.shootingTimer.remove()
+    this.physics.add.collider(this.defenderGroup, this.monsterGroup, function (defenderCollide, monsterCollide, defenderPosition, defenderShoots, makesEnergy) {
+      if (defenderCollide.defenderShoots === true) {
+        defenderCollide.shootingTimer.remove()
+      } else if (defenderCollide.makesEnergy === true) {
+        defenderCollide.energyDelay.remove()
+      }
       const removePosition = this.defenderPositions.indexOf(defenderCollide.x + defenderCollide.y);
       if (removePosition > -1) {
         this.defenderPositions.splice(removePosition, 1)
       }
-      console.log(this.defenderPositions)
       defenderCollide.destroy()
     }.bind(this))
   }
@@ -217,10 +264,12 @@ class GameScene extends Phaser.Scene {
     
     // Makes defenders only shoot if a monster is on their row
     this.defenderGroup.children.each(function(defender) {
-      if (this.monsterYPositions.includes(defender.y) && this.gameOver != true) {
-        defender.shootingTimer.paused = false
-      } else {
-        defender.shootingTimer.paused = true
+      if (defender.defenderShoots === true) {
+        if (this.monsterYPositions.includes(defender.y) && this.gameOver != true) {
+          defender.shootingTimer.paused = false
+        } else {
+          defender.shootingTimer.paused = true
+        }
       }
     }.bind(this))
 
@@ -237,7 +286,7 @@ class GameScene extends Phaser.Scene {
       }
     }.bind(this))
 
-    // Keep velocity of monsters the same
+    // Keeps velocity of monsters consistant
     this.monsterGroup.children.each(function(monster) {
       monster.body.velocity.x = -40
     })
@@ -252,6 +301,32 @@ class GameScene extends Phaser.Scene {
         this.gameOverText.on('pointerdown', () => this.restartGame())
       }
     }.bind(this))
+
+    // Waves of monsters (extra)
+    if (this.monsterDelay === 3000) {
+      this.monsterDelay = 8000
+      this.numberOfMonsters = 8
+      this.monstersSpawned = 0
+      while (this.numberOfMonsters > this.monstersSpawned) {
+        this.createMonster(this.createOne = true)
+        this.monstersSpawned += 1
+      }
+      this.monstersSpawned = 0
+      this.numberOfWaves += 1
+    }
+
+    const one = this.input.keyboard.addKey('Q')
+    const two = this.input.keyboard.addKey('E')
+
+    if (one.isDown === true) {
+      this.defenderType = 1
+      this.defenderTypeText.setText('Selected Defender: Soldier (100E)')
+    }
+
+    if (two.isDown === true) {
+      this.defenderType = 2
+      this.defenderTypeText.setText('Selected Defender: Generator (50E)')
+    }
   }
 }
 
