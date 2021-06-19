@@ -5,7 +5,6 @@
 // Created by: haokai
 // Created on: Jun 2021
 // This is the game Scene
-//change
 
 class GameScene extends Phaser.Scene {
   constructor () {
