@@ -41,6 +41,7 @@ class GameScene extends Phaser.Scene {
       defender.shootingTimer = this.time.addEvent({ delay: 2000, callback: this.createLaser, callbackScope: this, args: [x, y], loop: true });
       defender.shootingTimer.paused = true;
       this.defenderGroup.add(defender)
+
       // Energy Generator (extra)
     } else if (this.defenderType === 2 && this.energy >= 50 && this.defenderPositions.indexOf(x + y) === -1) {
       this.energy -= 50
@@ -53,7 +54,7 @@ class GameScene extends Phaser.Scene {
       defender.makesEnergy = true
       // Makes generator produce energy
       defender.energyDelay = null
-      defender.energyDelay = this.time.addEvent({ delay: 15000, callback: this.generatorAddEnergy, callbackScope: this, loop: true });
+      defender.energyDelay = this.time.addEvent({ delay: 20000, callback: this.generatorAddEnergy, callbackScope: this, loop: true });
       this.defenderGroup.add(defender)
     }
   }
@@ -75,16 +76,39 @@ class GameScene extends Phaser.Scene {
 
   // Creates a monster then sets a timer to create another
   createMonster(createOne) {
+    // Decides which type of monsters can be created depending on the number of waves (extra)
+    if (this.numberOfWaves === 0) {
+      this.monsterType = (Math.floor(Math.random() * 8) + 1)
+    } else if (this.numberOfWaves >= 1) {
+      this.monsterType = (Math.floor(Math.random() * 10) + 1)
+    }
+    
     // Gets a y coordinate corresponding with one of the five rows
     const monsterYLocation = ((Math.floor(Math.random() * 5) + 1) * 180) + 90
-    const monster = this.physics.add.sprite(1920, monsterYLocation, 'monster').setScale(0.20)
-    monster.body.velocity.x = -40
-    monster.health = 100
-    this.monsterYPositions.push(monsterYLocation)
-    this.monsterGroup.add(monster)
+
+    // Decides which type of monster is created depending on the random number (extra)
+    // Monster
+    if (this.monsterType <= 8) {
+      const monster = this.physics.add.sprite(1920, monsterYLocation, 'monster').setScale(0.20)
+      monster.monsterSpeed = ((Math.floor(Math.random() * (40 - 30 + 1)) + 30) * -1)
+      monster.body.velocity.x = monster.monsterSpeed
+      monster.health = 100
+      this.monsterYPositions.push(monsterYLocation)
+      this.monsterGroup.add(monster)
+      // Stronger Monster
+    } else if (this.monsterType >= 9) {
+      const monster = this.physics.add.sprite(1920, monsterYLocation, 'strongerMonster').setScale(0.5)
+      monster.monsterSpeed = ((Math.floor(Math.random() * (40 - 30 + 1)) + 30) * -1)
+      monster.body.velocity.x = monster.monsterSpeed
+      monster.health = 200
+      this.monsterYPositions.push(monsterYLocation)
+      this.monsterGroup.add(monster)
+    }
     console.log('Created new monster')
+
+    // Reduces the delay between monsters and starts new timer
     if (this.monsterDelay > 3000 && createOne != true) {
-      this.monsterDelay -= 250
+      this.monsterDelay -= 1000
       console.log('New delay is: ', this.monsterDelay)
     }
     if (this.gameOver != true && createOne != true ) {
@@ -111,7 +135,7 @@ class GameScene extends Phaser.Scene {
     this.energyText.setText('Energy: ' + this.energy.toString())
     this.score = 0
     this.scoreText.setText('Score: ' + this.score.toString())
-    this.monsterDelay = 10000
+    this.monsterDelay = 15000
     this.monsterYPositions = []
     this.defenderPositions = []
     console.log('Game Reset')
@@ -143,7 +167,7 @@ class GameScene extends Phaser.Scene {
     this.monsterTimer = null
     this.musicTimer = null
     this.startDelay = null
-    this.monsterDelay = 10000
+    this.monsterDelay = 15000
     this.monsterYPositions = []
     this.defenderPositions = []
     this.gameOver = null
@@ -168,6 +192,7 @@ class GameScene extends Phaser.Scene {
     this.load.image('soldier', 'assets/soldier.png')
     this.load.image('generator', 'assets/energyGenerator.png')
     this.load.image('monster', 'assets/monster.png')
+    this.load.image('strongerMonster', 'assets/redMonster.png')
     this.load.image('laser', 'assets/laser.png')
 
     // Audio
@@ -288,7 +313,7 @@ class GameScene extends Phaser.Scene {
 
     // Keeps velocity of monsters consistant
     this.monsterGroup.children.each(function(monster) {
-      monster.body.velocity.x = -40
+      monster.body.velocity.x = monster.monsterSpeed
     })
 
     // If a monster reaches the left, it is Game Over!
@@ -304,7 +329,7 @@ class GameScene extends Phaser.Scene {
 
     // Waves of monsters (extra)
     if (this.monsterDelay === 3000) {
-      this.monsterDelay = 8000
+      this.monsterDelay = 15000
       this.numberOfMonsters = 8
       this.monstersSpawned = 0
       while (this.numberOfMonsters > this.monstersSpawned) {
@@ -315,8 +340,8 @@ class GameScene extends Phaser.Scene {
       this.numberOfWaves += 1
     }
 
-    const one = this.input.keyboard.addKey('Q')
-    const two = this.input.keyboard.addKey('E')
+    const one = this.input.keyboard.addKey('ONE')
+    const two = this.input.keyboard.addKey('TWO')
 
     if (one.isDown === true) {
       this.defenderType = 1
