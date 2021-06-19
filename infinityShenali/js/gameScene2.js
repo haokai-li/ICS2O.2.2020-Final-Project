@@ -6,10 +6,10 @@
 // Created on: June 2021
 // This is the Game Scene 2 
 
-class Gamescene2 extends Phaser.Scene {
+class GameScene2 extends Phaser.Scene {
 
   constructor () {
-    super({ key: 'gamescene2' })
+    super({ key: 'gameScene2' })
 
     this.player = null
     this.platforms = null
