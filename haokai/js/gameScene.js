@@ -5,7 +5,6 @@
 // Created by: haokai
 // Created on: Jun 2021
 // This is the game Scene
-//change
 
 class GameScene extends Phaser.Scene {
   constructor () {
@@ -150,7 +149,7 @@ class GameScene extends Phaser.Scene {
         console.log('2')
       }
 
-      if (item.x > 2020) {
+      if (item.x > 2120) {
         item.destroy()
         console.log('3')
       }
