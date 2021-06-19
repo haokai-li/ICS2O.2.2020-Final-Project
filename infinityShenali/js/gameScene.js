@@ -6,10 +6,10 @@
 // Created on: June 2021
 // This is the Game Scene
 
-class GameScene1 extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
 
   constructor () {
-    super({ key: 'gameScene1' })
+    super({ key: 'gameScene' })
 
     this.player = null
     this.platforms = null
@@ -20,7 +20,7 @@ class GameScene1 extends Phaser.Scene {
     this.checkpoint = false
     this.score = 0
     this.scoreText = null
-    this.scoreTextStyle = { font: '45px Arial', fill: '#fff', align: 'center' }
+    this.scoreTextStyle = { font: '45px Fira Sans', fill: '#fff', align: 'center' }
     this.text1 = null
   }
 
@@ -50,9 +50,6 @@ class GameScene1 extends Phaser.Scene {
     this.background.setOrigin(0, 0)
 
     this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
-
-    this.text1 = this.add.text(0, 10, 'Use left, right, and down keys to move. Press the spacebar to jump.', this.scoreTextStyle)
-    this.text1.visible = false
 
     // platforms
     this.platforms = this.physics.add.staticGroup()
@@ -84,22 +81,22 @@ class GameScene1 extends Phaser.Scene {
     this.platforms.create(1444, 790, 'scene1_ground')
 
     // checkpoint
-    this.checkpoint = this.add.sprite (1800, 439, 'scene1_checkpoint')
+    this.checkpoint = this.physics.add.sprite (1800, 400, 'scene1_checkpoint')
 
     // portal
-    this.portal = this.add.sprite (1500, 730, 'scene1_portal')
+    this.portal = this.physics.add.sprite (1500, 670, 'scene1_portal')
 
     // spike
     this.spike = this.physics.add.staticGroup()
 
-    this.spike.create(900, 200, 'scene1_spike')
-    this.spike.create(1300, 200, 'scene1_spike')
+    this.spike.create(900, 205, 'scene1_spike')
+    this.spike.create(1300, 205, 'scene1_spike')
 
-    this.spike.create(1200, 470, 'scene1_spike')
-    this.spike.create(1190, 470, 'scene1_spike')
-    this.spike.create(890, 470, 'scene1_spike')
+    this.spike.create(1200, 475, 'scene1_spike')
+    this.spike.create(1190, 475, 'scene1_spike')
+    this.spike.create(890, 475, 'scene1_spike')
 
-    this.spike.create(500, 740, 'scene1_spike')
+    this.spike.create(500, 745, 'scene1_spike')
 
     // coin
     this.coin = this.physics.add.staticGroup()
@@ -113,7 +110,6 @@ class GameScene1 extends Phaser.Scene {
     // player
     this.player = this.physics.add.sprite (100, 199, 'scene1_squareSprite');
 
-    this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
 
     this.anims.create({
@@ -144,16 +140,20 @@ class GameScene1 extends Phaser.Scene {
     // collision between spike and coin
     this.physics.add.collider(this.coin, this.spike)
     
-    // collision between spikes and checkpoint
-    this.physics.add.collider(this.spike, this.checkpoint, function() {
-      this.player.setPosition(200, 199)
-    }.bind(this))
+    // collision between spikes and checkpoint and platforms
+    this.physics.add.collider(this.checkpoint, this.platforms)
+    this.physics.add.collider(this.portal, this.platforms)
 
     // collision between the player and coins
     this.physics.add.collider(this.player, this.coin, function(playerCollide, coinCollide) {
       coinCollide.destroy();
       this.score = this.score + 1
       this.scoreText.setText('Score: ' + this.score.toString())
+    }.bind(this))
+
+    //collision between player and portal
+    this.physics.add.collider(this.player, this.portal, function() {
+      this.scene.start('menuScene2')
     }.bind(this))
   }
 
@@ -177,4 +177,4 @@ class GameScene1 extends Phaser.Scene {
   }
 }
 
-export default GameScene1
+export default GameScene
