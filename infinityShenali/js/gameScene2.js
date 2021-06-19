@@ -36,7 +36,7 @@ class GameScene2 extends Phaser.Scene {
     this.replayButton.setInteractive({ useHandCursor: true })
     this.replayButton.on('pointerdown', () => this.clickButton())
 
-    this.text = this.add.text(1300 / 2, (500 / 2) + 100, 'You finished the tutorial!\nPress start to play again.', this.textStyle)
+    this.text = this.add.text(1100 / 2, (500 / 2) + 100, 'You finished the tutorial!\nPress start to go to the next level.', this.textStyle)
   }
 
   update (time, delta) {
