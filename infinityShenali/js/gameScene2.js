@@ -6,10 +6,10 @@
 // Created on: June 2021
 // This is the Game Scene 2 
 
-class Gamescene3 extends Phaser.Scene {
+class Gamescene2 extends Phaser.Scene {
 
   constructor () {
-    super({ key: 'gamescene3' })
+    super({ key: 'gamescene2' })
 
     this.player = null
     this.platforms = null
@@ -51,7 +51,7 @@ class Gamescene3 extends Phaser.Scene {
 
     this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
 
-    this.text1 = this.add.text(0, 10, 'Use left, right, and down keys to move. Press the spacebar to jump.', this.scoreTextStyle)
+    this.text1 = this.add.text(0, 10, 'Use left, right, keys to move. Press the spacebar to jump.', this.scoreTextStyle)
     this.text1.visible = false
 
     // platforms

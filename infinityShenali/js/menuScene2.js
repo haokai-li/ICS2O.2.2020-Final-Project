@@ -4,7 +4,7 @@
 //
 // Created by: Infinity de Guzman & Shenali Alles 
 // Created on: June 2021
-// This is the Game Scene 2
+// This is the Menu Scene 2
 
 class MenuScene2 extends Phaser.Scene {
   constructor () {
@@ -28,9 +28,9 @@ class MenuScene2 extends Phaser.Scene {
   }
 
   create (data) {
-    this.gameSceneBackgroundImage = this.add.sprite(0, 0, 'menuScene2_galaxyBackground')
-    this.gameSceneBackgroundImage.x = 1920 / 2
-    this.gameSceneBackgroundImage.y = 1080 / 2
+    this.menuScene2BackgroundImage = this.add.sprite(0, 0, 'menuScene2_galaxyBackground')
+    this.menuScene2BackgroundImage.x = 1920 / 2
+    this.menuScene2BackgroundImage.y = 1080 / 2
 
     this.replayButton = this.add.sprite(1920 / 2, (1080 / 2) + 100, 'replayButton')
     this.replayButton.setInteractive({ useHandCursor: true })
