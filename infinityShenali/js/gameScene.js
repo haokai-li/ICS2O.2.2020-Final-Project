@@ -6,10 +6,10 @@
 // Created on: June 2021
 // This is the Game Scene
 
-class GameScene1 extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
 
   constructor () {
-    super({ key: 'gameScene1' })
+    super({ key: 'gameScene' })
 
     this.player = null
     this.platforms = null
@@ -156,7 +156,7 @@ class GameScene1 extends Phaser.Scene {
 
     //collision between player and portal
     this.physics.add.collider(this.player, this.portal, function() {
-      this.scene.start('gameScene2')
+      this.scene.start('menuScene2')
     }.bind(this))
   }
 
@@ -180,4 +180,4 @@ class GameScene1 extends Phaser.Scene {
   }
 }
 
-export default GameScene1
+export default GameScene
