@@ -61,11 +61,13 @@ def KeyDown(event):
 def found(event):
     global timeout, caught, timing, sneak, pick
     global current, history_array
-
+    print("Intrustion Detected")
     if shutdown:  # if shutdown is true, shutdown PC
+        print("Shutting Down")
         os.system("shutdown /s /t 0")
     else:
         if not timing:  # timeout for x seconds
+            print("Timing Out")
             timing = time.time()
         elif (time.time() - timing) >= timeout:
             caught = False
@@ -77,6 +79,7 @@ def found(event):
             # send keys randomly depending on sneak value
             current += 1
             if not pick:
+                print("Sneaking Keys")
                 pick = randint(round(sneak / 2), sneak)
             elif current == pick:
                 keyboard.send("\b")
@@ -85,6 +88,7 @@ def found(event):
             return True
 
         if logfile:  # if logfile send keys to logfile
+            print("Logging Attack")
             log(event)
         # block keyboard input
         return False
