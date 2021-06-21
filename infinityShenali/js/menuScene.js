@@ -36,7 +36,7 @@ class MenuScene extends Phaser.Scene {
     this.startButton.setInteractive({ useHandCursor: true })
     this.startButton.on('pointerdown', () => this.clickButton())
 
-    this.instructionsText = this.add.text(675 / 2, (50 / 2) + 100, 'How to play:\nPress left, right, and down keys to move.\nPress the spacebar to jump.\nAvoid spikes and earn as many coins as you can.\nTouch puddles to gain a checkpoint.\nClick the button to start.', this.textStyle)
+    this.instructionsText = this.add.text(675 / 2, (50 / 2) + 100, 'How to play:\nPress left and right keys to move.\nPress the spacebar to jump.\nAvoid spikes and earn as many coins as you can.\nTouch puddles to gain a checkpoint.\nClick the button to start.', this.textStyle)
   }
 
   update (time, delta) {
