@@ -1,4 +1,4 @@
-/* global phaser */
+//* global phaser */
 
 // Copyright (c) 2021 Infinity de Guzman & Shenali Alles All rights reserved
 //
@@ -30,7 +30,7 @@ const config = {
     default: 'arcade',
     arcade: {
       gravity: { y: 300 },
-      debug: true
+      debug: false
     }
   },
   // Set backgroundColor
@@ -54,9 +54,9 @@ game.scene.add('gameScene2', gameScene2)
 game.scene.add('menuScene2', menuScene2)
 
 // Start title
-//game.scene.start('splashScene')
+game.scene.start('splashScene')
 //game.scene.start('titleScene')
-game.scene.start('gameScene')
+//game.scene.start('gameScene')
 //game.scene.start('gameScene2')
 //game.scene.start('menuScene2')
 //game.scene.start('menuScene')

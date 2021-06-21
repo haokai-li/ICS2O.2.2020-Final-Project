@@ -97,6 +97,7 @@ class GameScene extends Phaser.Scene {
     this.spike.create(890, 475, 'scene1_spike')
 
     this.spike.create(500, 745, 'scene1_spike')
+    this.spike.create(800, 745, 'scene1_spike')
 
     // coin
     this.coin = this.physics.add.staticGroup()
@@ -106,6 +107,11 @@ class GameScene extends Phaser.Scene {
     this.coin.create(890, 430, 'scene1_coin')
     this.coin.create(790, 430, 'scene1_coin')
     this.coin.create(690, 430, 'scene1_coin')
+
+    this.coin.create(500, 700, 'scene1_coin')
+    this.coin.create(600, 700, 'scene1_coin')
+    this.coin.create(700, 700, 'scene1_coin')
+    this.coin.create(800, 700, 'scene1_coin')
 
     // player
     this.player = this.physics.add.sprite (100, 199, 'scene1_squareSprite');
@@ -134,14 +140,22 @@ class GameScene extends Phaser.Scene {
 
     // collision between player and spikes
     this.physics.add.collider(this.player, this.spike, function() {
-      this.player.setPosition(100, 199)
+      if (this.checkpoint == false) {
+        this.player.setPosition(100, 199)
+      } else {
+        this.player.setPosition(1800, 400)
+      }
     }.bind(this))
 
     // collision between spike and coin
     this.physics.add.collider(this.coin, this.spike)
     
     // collision between spikes and checkpoint and platforms
-    this.physics.add.collider(this.checkpoint, this.platforms)
+    this.physics.add.collider(this.checkpoint, this.platforms, function() {
+      this.checkpoint = true
+    }.bind(this))
+
+
     this.physics.add.collider(this.portal, this.platforms)
 
     // collision between the player and coins
