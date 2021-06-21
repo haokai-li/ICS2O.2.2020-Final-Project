@@ -25,6 +25,7 @@ caught = False
 timing = None
 pick = None
 current = 0
+print("goodUSB has started")
 
 
 # Gets called for each keystroke
