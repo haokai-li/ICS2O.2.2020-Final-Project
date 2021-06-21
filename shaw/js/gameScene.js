@@ -212,7 +212,7 @@ class GameScene extends Phaser.Scene {
     this.scoreText = this.add.text(10, 60, 'Score: ' + this.score.toString(), this.scoreTextStyle)
 
     // Selected defender text
-    this.defenderTypeText = this.add.text(1300, 10, 'Selected Defender: Soldier (100E)', this.defenderTypeTextStyle)
+    this.defenderTypeText = this.add.text(1200, 10, 'Selected Defender: Soldier (100E)', this.defenderTypeTextStyle)
 
      // Play Music
     if (this.gameReset === false) {
